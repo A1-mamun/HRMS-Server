@@ -1,41 +1,43 @@
-# NextScript
+# The HRMS Server Site
 
-A server for blogs management
+## Contributing to The HRMS Server Project
 
-## Run Locally
+1. **Fork the Repository**
 
-Clone the project
+   - Go to [HRMS-Server on GitHub](https://github.com/A1-mamun/HRMS-Server) and click the "Fork" button at the top right of the page.
 
-```bash
-  git clone https://github.com/A1-mamun/apollo-assignment-3.git
-```
+2. **Clone Your Fork**
 
-Go to the project directory
+   - Run the following command to clone your fork to your local machine:
+     ```bash
+     git clone https://github.com/<your-username>/HRMS-Server.git
+     ```
 
-```bash
-  cd apollo-assignment-3
-```
+3. **Set Upstream Remote**
 
-Install dependencies
+   - Navigate to your project directory:
+     ```bash
+     cd HRMS-Server
+     ```
+   - Add the original repository as an upstream remote:
+     ```bash
+     git remote add upstream https://github.com/A1-mamun/HRMS-Server.git
+     ```
 
-```bash
-  npm install
-```
+4. **Pull Updates from Upstream**
 
-Create a `.env` file in your root directory and add the following to connect with mongoDB
+   - Fetch the latest changes from the original repository:
+     ```bash
+     git fetch upstream
+     ```
+   - Merge changes into your local branch:
+     ```bash
+     git merge upstream/main
+     ```
 
-```bash
-PORT=3000    // you can use your suitable port
-DATABASE_URL=  // use your own database url
-BCRYPT_SALT_ROUNDS= // use a salt round
-JWT_ACCESS_SECRET= // use a jwt access secret
-JWT_REFRESH_SECRET=  // use a refresh secret
-JWT_ACCESS_EXPIRES_IN= // use a expiration time for access token
-JWT_REFRESH_EXPIRES_IN= // use a expiration time for refresh token
-```
-
-Start the server
-
-```bash
-  npm run start:dev
-```
+5. **Create a Pull Request**
+   - Push your changes to your fork:
+     ```bash
+     git push origin <your-branch>
+     ```
+   - Open a pull request from your fork's branch to the main repository's `main` branch.
