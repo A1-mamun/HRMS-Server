@@ -1,5 +1,14 @@
 import { model, Schema } from 'mongoose';
-import { TEmployer, TOrganisationDetails } from './employer.interface';
+import {
+  TAddress,
+  TAuthorisedPerson,
+  TDocument,
+  TEmployer,
+  TKeyContactPerson,
+  TLevel1Person,
+  TOrganisationDetails,
+  TTradingHours,
+} from './employer.interface';
 import {
   OrganisationTypes,
   SectorsName,
@@ -69,24 +78,85 @@ const organisationDetailsSchema = new Schema<TOrganisationDetails>({
   },
 });
 
-const personSchema = new Schema({
-  firstName: { type: String, required: [true, 'First name is required'] },
-  lastName: { type: String, required: [true, 'Last name is required'] },
-  designation: { type: String, required: [true, 'Designation is required'] },
-  phoneNo: { type: String, required: [true, 'Phone number is required'] },
-  email: { type: String, unique: true, required: [true, 'Email is required'] },
-  proofOfId: { type: String },
-  criminalHistory: {
-    type: String,
-    enum: {
-      values: ['Yes', 'No'],
-      message: '{VALUE} is not supported',
+const AuthorisedPersonSchema = new Schema<TAuthorisedPerson>(
+  {
+    firstName: { type: String, required: [true, 'First name is required'] },
+    lastName: { type: String, required: [true, 'Last name is required'] },
+    designation: { type: String, required: [true, 'Designation is required'] },
+    phoneNo: { type: String, required: [true, 'Phone number is required'] },
+    email: {
+      type: String,
+      required: [true, 'Email is required'],
+      unique: true,
     },
-    required: [true, 'Criminal history is required'],
+    criminalHistory: {
+      type: String,
+      enum: {
+        values: ['Yes', 'No'],
+        message: '{VALUE} is not supported',
+      },
+      required: [true, 'Criminal history is required'],
+    },
+    proofOfId: { type: String, required: [true, 'Proof of ID is required'] },
   },
-});
+  { _id: false },
+);
 
-const addressSchema = new Schema({
+const keyContactPersonSchema = new Schema<TKeyContactPerson>(
+  {
+    firstName: { type: String, required: [true, 'First name is required'] },
+    lastName: { type: String, required: [true, 'Last name is required'] },
+    designation: { type: String, required: [true, 'Designation is required'] },
+    phoneNo: { type: String, required: [true, 'Phone number is required'] },
+    email: {
+      type: String,
+      required: [true, 'Email is required'],
+      unique: true,
+    },
+    criminalHistory: {
+      type: String,
+      enum: {
+        values: ['Yes', 'No'],
+        message: '{VALUE} is not supported',
+      },
+      required: [true, 'Criminal history is required'],
+    },
+    keyPersonProofOfId: {
+      type: String,
+      required: [true, 'Proof of ID is required'],
+    },
+  },
+  { _id: false },
+);
+
+const level1PersonSchema = new Schema<TLevel1Person>(
+  {
+    firstName: { type: String, required: [true, 'First name is required'] },
+    lastName: { type: String, required: [true, 'Last name is required'] },
+    designation: { type: String, required: [true, 'Designation is required'] },
+    phoneNo: { type: String, required: [true, 'Phone number is required'] },
+    email: {
+      type: String,
+      required: [true, 'Email is required'],
+      unique: true,
+    },
+    criminalHistory: {
+      type: String,
+      enum: {
+        values: ['Yes', 'No'],
+        message: '{VALUE} is not supported',
+      },
+      required: [true, 'Criminal history is required'],
+    },
+    level1PersonProofOfId: {
+      type: String,
+      required: [true, 'Proof of ID is required'],
+    },
+  },
+  { _id: false },
+);
+
+const addressSchema = new Schema<TAddress>({
   postCode: { type: String },
   addressLine1: { type: String },
   addressLine2: { type: String },
@@ -95,7 +165,7 @@ const addressSchema = new Schema({
   country: { type: String },
 });
 
-const tradingHoursSchema = new Schema({
+const tradingHoursSchema = new Schema<TTradingHours>({
   day: {
     type: String,
     enum: {
@@ -124,7 +194,7 @@ const tradingHoursSchema = new Schema({
   },
 });
 
-const documentSchema = new Schema({
+const documentSchema = new Schema<TDocument>({
   payeeAccountReference: { type: String },
   latestRti: { type: String },
   employerLiabilityInsurance: { type: String },
@@ -154,15 +224,15 @@ const employerSchema = new Schema<TEmployer>(
       required: [true, 'Organisation details is required'],
     },
     authorisedPerson: {
-      type: personSchema,
+      type: AuthorisedPersonSchema,
       required: [true, 'Authorised person details is required'],
     },
     keyContactPerson: {
-      type: personSchema,
+      type: keyContactPersonSchema,
       required: [true, 'Key contact person details is required'],
     },
     level1User: {
-      type: personSchema,
+      type: level1PersonSchema,
       required: [true, 'Level 1 user details is required'],
     },
     organisationAddress: {

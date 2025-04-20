@@ -97,7 +97,7 @@ export type TAddress = {
   addressLine2: string;
   addressLine3: string;
   city: string;
-  Country: string;
+  country: string;
 };
 
 export type TTradingHours = {
