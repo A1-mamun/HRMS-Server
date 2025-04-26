@@ -56,12 +56,12 @@ export type TDaysOfWeek =
 export type TOrganisationDetails = {
   name: string;
   type: TOrganisationType;
-  registrationNo: string;
+  registrationNo?: string;
   contactNo: string;
   loginEmail: string;
   organisationEmail: string;
-  websiteURL: string;
-  landlineNo: string;
+  websiteURL?: string;
+  landlineNo?: string;
   tradingName: string;
   tradingPeriod: TTradingPeriod;
   nameOfSector: TNameOfSector;
@@ -77,19 +77,20 @@ export type TPerson = {
   phoneNo: string;
   email: string;
   criminalHistory: 'Yes' | 'No';
-};
-
-export type TAuthorisedPerson = TPerson & {
   proofOfId: string;
 };
 
-export type TKeyContactPerson = TPerson & {
-  keyPersonProofOfId: string;
-};
+// export type TAuthorisedPerson = TPerson & {
+//   proofOfId: string;
+// };
 
-export type TLevel1Person = TPerson & {
-  level1PersonProofOfId: string;
-};
+// export type TKeyContactPerson = TPerson & {
+//   keyPersonProofOfId: string;
+// };
+
+// export type TLevel1Person = TPerson & {
+//   level1PersonProofOfId: string;
+// };
 
 export type TAddress = {
   postCode: string;
@@ -102,9 +103,9 @@ export type TAddress = {
 
 export type TTradingHours = {
   day: TDaysOfWeek;
-  startTime: string;
-  endTime: string;
-  status: 'Open' | 'Close';
+  startTime?: string;
+  endTime?: string;
+  status?: 'Open' | 'Close';
 };
 
 export type TDocument = {
@@ -126,11 +127,14 @@ export type TDocument = {
 };
 
 export type TEmployer = {
-  userId: Types.ObjectId;
+  user: Types.ObjectId;
   organisationDetails: TOrganisationDetails;
-  authorisedPerson: TAuthorisedPerson;
-  keyContactPerson: TKeyContactPerson;
-  level1User: TLevel1Person;
+  // authorisedPerson: TAuthorisedPerson;
+  // keyContactPerson: TKeyContactPerson;
+  // level1User: TLevel1Person;
+  authorisedPerson: TPerson;
+  keyContactPerson: TPerson;
+  level1User: TPerson;
   organisationAddress: TAddress;
   tradingHours: TTradingHours[];
   documents: TDocument;

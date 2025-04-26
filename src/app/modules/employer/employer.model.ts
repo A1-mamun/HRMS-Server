@@ -1,12 +1,13 @@
 import { model, Schema } from 'mongoose';
 import {
   TAddress,
-  TAuthorisedPerson,
+  // TAuthorisedPerson,
   TDocument,
   TEmployer,
-  TKeyContactPerson,
-  TLevel1Person,
+  // TKeyContactPerson,
+  // TLevel1Person,
   TOrganisationDetails,
+  TPerson,
   TTradingHours,
 } from './employer.interface';
 import {
@@ -28,7 +29,6 @@ const organisationDetailsSchema = new Schema<TOrganisationDetails>({
   registrationNo: {
     type: String,
     unique: true,
-    required: [true, 'Rgistration number is required'],
   },
   contactNo: { type: String, required: [true, 'Contact number is required'] },
   loginEmail: {
@@ -78,7 +78,7 @@ const organisationDetailsSchema = new Schema<TOrganisationDetails>({
   },
 });
 
-const AuthorisedPersonSchema = new Schema<TAuthorisedPerson>(
+const personSchema = new Schema<TPerson>(
   {
     firstName: { type: String, required: [true, 'First name is required'] },
     lastName: { type: String, required: [true, 'Last name is required'] },
@@ -102,119 +102,150 @@ const AuthorisedPersonSchema = new Schema<TAuthorisedPerson>(
   { _id: false },
 );
 
-const keyContactPersonSchema = new Schema<TKeyContactPerson>(
+// const AuthorisedPersonSchema = new Schema<TAuthorisedPerson>(
+//   {
+//     firstName: { type: String, required: [true, 'First name is required'] },
+//     lastName: { type: String, required: [true, 'Last name is required'] },
+//     designation: { type: String, required: [true, 'Designation is required'] },
+//     phoneNo: { type: String, required: [true, 'Phone number is required'] },
+//     email: {
+//       type: String,
+//       required: [true, 'Email is required'],
+//       unique: true,
+//     },
+//     criminalHistory: {
+//       type: String,
+//       enum: {
+//         values: ['Yes', 'No'],
+//         message: '{VALUE} is not supported',
+//       },
+//       required: [true, 'Criminal history is required'],
+//     },
+//     proofOfId: { type: String, required: [true, 'Proof of ID is required'] },
+//   },
+//   { _id: false },
+// );
+
+// const keyContactPersonSchema = new Schema<TKeyContactPerson>(
+//   {
+//     firstName: { type: String, required: [true, 'First name is required'] },
+//     lastName: { type: String, required: [true, 'Last name is required'] },
+//     designation: { type: String, required: [true, 'Designation is required'] },
+//     phoneNo: { type: String, required: [true, 'Phone number is required'] },
+//     email: {
+//       type: String,
+//       required: [true, 'Email is required'],
+//       unique: true,
+//     },
+//     criminalHistory: {
+//       type: String,
+//       enum: {
+//         values: ['Yes', 'No'],
+//         message: '{VALUE} is not supported',
+//       },
+//       required: [true, 'Criminal history is required'],
+//     },
+//     keyPersonProofOfId: {
+//       type: String,
+//       required: [true, 'Proof of ID is required'],
+//     },
+//   },
+//   { _id: false },
+// );
+
+// const level1PersonSchema = new Schema<TLevel1Person>(
+//   {
+//     firstName: { type: String, required: [true, 'First name is required'] },
+//     lastName: { type: String, required: [true, 'Last name is required'] },
+//     designation: { type: String, required: [true, 'Designation is required'] },
+//     phoneNo: { type: String, required: [true, 'Phone number is required'] },
+//     email: {
+//       type: String,
+//       required: [true, 'Email is required'],
+//       unique: true,
+//     },
+//     criminalHistory: {
+//       type: String,
+//       enum: {
+//         values: ['Yes', 'No'],
+//         message: '{VALUE} is not supported',
+//       },
+//       required: [true, 'Criminal history is required'],
+//     },
+//     level1PersonProofOfId: {
+//       type: String,
+//       required: [true, 'Proof of ID is required'],
+//     },
+//   },
+//   { _id: false },
+// );
+
+const addressSchema = new Schema<TAddress>(
   {
-    firstName: { type: String, required: [true, 'First name is required'] },
-    lastName: { type: String, required: [true, 'Last name is required'] },
-    designation: { type: String, required: [true, 'Designation is required'] },
-    phoneNo: { type: String, required: [true, 'Phone number is required'] },
-    email: {
-      type: String,
-      required: [true, 'Email is required'],
-      unique: true,
-    },
-    criminalHistory: {
+    postCode: { type: String },
+    addressLine1: { type: String },
+    addressLine2: { type: String },
+    addressLine3: { type: String },
+    city: { type: String },
+    country: { type: String },
+  },
+  { _id: false },
+);
+
+const tradingHoursSchema = new Schema<TTradingHours>(
+  {
+    day: {
       type: String,
       enum: {
-        values: ['Yes', 'No'],
+        values: [
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday',
+          'Sunday',
+        ],
         message: '{VALUE} is not supported',
       },
-      required: [true, 'Criminal history is required'],
     },
-    keyPersonProofOfId: {
+    startTime: { type: String },
+    endTime: { type: String },
+    status: {
       type: String,
-      required: [true, 'Proof of ID is required'],
+      enum: {
+        values: ['Open', 'Close'],
+        message: '{VALUE} is not supported',
+      },
     },
   },
   { _id: false },
 );
 
-const level1PersonSchema = new Schema<TLevel1Person>(
+const documentSchema = new Schema<TDocument>(
   {
-    firstName: { type: String, required: [true, 'First name is required'] },
-    lastName: { type: String, required: [true, 'Last name is required'] },
-    designation: { type: String, required: [true, 'Designation is required'] },
-    phoneNo: { type: String, required: [true, 'Phone number is required'] },
-    email: {
-      type: String,
-      required: [true, 'Email is required'],
-      unique: true,
-    },
-    criminalHistory: {
-      type: String,
-      enum: {
-        values: ['Yes', 'No'],
-        message: '{VALUE} is not supported',
-      },
-      required: [true, 'Criminal history is required'],
-    },
-    level1PersonProofOfId: {
-      type: String,
-      required: [true, 'Proof of ID is required'],
-    },
+    payeeAccountReference: { type: String },
+    latestRti: { type: String },
+    employerLiabilityInsurance: { type: String },
+    proofOfBusinessPremises: { type: String },
+    copyOfLease: { type: String },
+    businessBankStatement: { type: String },
+    signedAnnualAccount: { type: String },
+    vatCertificate: { type: String },
+    healthSafetyRating: { type: String },
+    regulatoryBodyCertificate: { type: String },
+    businessLicense: { type: String },
+    franchiseAgreement: { type: String },
+    governingBodyRegistration: { type: String },
+    auditedAnnualAccount: { type: String },
+    othersDocuments: { type: String },
   },
   { _id: false },
 );
-
-const addressSchema = new Schema<TAddress>({
-  postCode: { type: String },
-  addressLine1: { type: String },
-  addressLine2: { type: String },
-  addressLine3: { type: String },
-  city: { type: String },
-  country: { type: String },
-});
-
-const tradingHoursSchema = new Schema<TTradingHours>({
-  day: {
-    type: String,
-    enum: {
-      values: [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday',
-      ],
-      message: '{VALUE} is not supported',
-    },
-    required: [true, 'Day is required'],
-  },
-  startTime: { type: String, required: [true, 'Start time is required'] },
-  endTime: { type: String, required: [true, 'End time is required'] },
-  status: {
-    type: String,
-    enum: {
-      values: ['Open', 'Close'],
-      message: '{VALUE} is not supported',
-    },
-    required: [true, 'Status is required'],
-  },
-});
-
-const documentSchema = new Schema<TDocument>({
-  payeeAccountReference: { type: String },
-  latestRti: { type: String },
-  employerLiabilityInsurance: { type: String },
-  proofOfBusinessPremises: { type: String },
-  copyOfLease: { type: String },
-  businessBankStatement: { type: String },
-  signedAnnualAccount: { type: String },
-  vatCertificate: { type: String },
-  healthSafetyRating: { type: String },
-  regulatoryBodyCertificate: { type: String },
-  businessLicense: { type: String },
-  franchiseAgreement: { type: String },
-  governingBodyRegistration: { type: String },
-  auditedAnnualAccount: { type: String },
-  othersDocuments: { type: String },
-});
 
 const employerSchema = new Schema<TEmployer>(
   {
-    userId: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'User ID is required'],
@@ -224,15 +255,15 @@ const employerSchema = new Schema<TEmployer>(
       required: [true, 'Organisation details is required'],
     },
     authorisedPerson: {
-      type: AuthorisedPersonSchema,
+      type: personSchema,
       required: [true, 'Authorised person details is required'],
     },
     keyContactPerson: {
-      type: keyContactPersonSchema,
+      type: personSchema,
       required: [true, 'Key contact person details is required'],
     },
     level1User: {
-      type: level1PersonSchema,
+      type: personSchema,
       required: [true, 'Level 1 user details is required'],
     },
     organisationAddress: {

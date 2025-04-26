@@ -14,7 +14,7 @@ const handleDuplicateError = (err: any): TGenericErrorResponse => {
   const statusCode = 400;
   return {
     statusCode,
-    message: 'Invalid Email',
+    message: 'Invalid Email or Registration Number',
     error,
   };
 };

@@ -6,6 +6,29 @@ import {
   TradingPeriod,
 } from './employer.constant';
 
+// Define Zod validation for Organisation Details Schema
+const organisationDetailsValidationSchema = z.object({
+  name: z
+    .string()
+    .min(2, 'Organisation name must be at least 2 characters long')
+    .max(150, 'Organisation name must be at most 150 characters long'),
+  type: z.enum([...OrganisationTypes] as [string, ...string[]]),
+  registrationNo: z.string().optional(),
+  contactNo: z.string(),
+  loginEmail: z.string().email('Invalid email format'),
+  organisationEmail: z.string().email('Invalid email format'),
+  websiteURL: z.string().optional(),
+  landlineNo: z.string().optional(),
+  tradingName: z
+    .string()
+    .min(2, 'Trading name must be at least 2 characters long')
+    .max(150, 'Trading name must be at most 150 characters long'),
+  tradingPeriod: z.enum([...TradingPeriod] as [string, ...string[]]),
+  nameOfSector: z.enum([...SectorsName] as [string, ...string[]]),
+  nameChangeLast5Years: z.enum(['Yes', 'No']),
+  FacedPenaltyLast3Years: z.enum(['Yes', 'No']),
+});
+
 // Define Zod validation for Person Schema
 const personValidationSchema = z.object({
   firstName: z
@@ -31,8 +54,8 @@ const personValidationSchema = z.object({
     }),
   phoneNo: z.string(),
   email: z.string().email('Invalid email format'),
-  proofOfId: z.string().optional(),
   criminalHistory: z.enum(['Yes', 'No']),
+  proofOfId: z.string().optional(),
 });
 
 // Define Zod validation for Address Schema
@@ -51,29 +74,6 @@ const tradingHoursValidationSchema = z.object({
   startTime: z.string().optional(),
   endTime: z.string().optional(),
   status: z.enum(['Open', 'Close']).optional(),
-});
-
-// Define Zod validation for Organisation Details Schema
-const organisationDetailsValidationSchema = z.object({
-  name: z
-    .string()
-    .min(2, 'Organisation name must be at least 2 characters long')
-    .max(150, 'Organisation name must be at most 150 characters long'),
-  type: z.enum([...OrganisationTypes] as [string, ...string[]]),
-  registrationNo: z.string(),
-  contactNo: z.string(),
-  loginEmail: z.string().email('Invalid email format'),
-  organisationEmail: z.string().email('Invalid email format'),
-  websiteURL: z.string().optional(),
-  landlineNo: z.string().optional(),
-  tradingName: z
-    .string()
-    .min(2, 'Trading name must be at least 2 characters long')
-    .max(150, 'Trading name must be at most 150 characters long'),
-  tradingPeriod: z.enum([...TradingPeriod] as [string, ...string[]]),
-  nameOfSector: z.enum([...SectorsName] as [string, ...string[]]),
-  nameChangeLast5Years: z.enum(['Yes', 'No']),
-  FacedPenaltyLast3Years: z.enum(['Yes', 'No']),
 });
 
 // Define Zod validation for Employer Schema

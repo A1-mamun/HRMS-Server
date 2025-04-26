@@ -2,7 +2,8 @@
 import { JwtPayload } from 'jsonwebtoken';
 import { sendImagesToCloudinary } from '../../utils/sendImageToCloudinary';
 import { TEmployer } from './employer.interface';
-// import { Employer } from './employer.model';
+import { User } from '../user/user.model';
+import { Employer } from './employer.model';
 
 const addOrgDocumentsToDB = async (
   files: any[],
@@ -22,11 +23,11 @@ const addOrgDocumentsToDB = async (
       fileMap[files[idx].fieldname] = img.secure_url as string;
     });
   }
-  console.log('File Map:', fileMap);
-  // Replace file objects in `data` with their Cloudinary URLs
+  // console.log('File Map:', fileMap);
+
   const updatedData = { ...data };
 
-  console.log('Updated Data:', updatedData);
+  // console.log('Updated Data:', updatedData);
 
   // Map file URLs into correct nested paths
   const replaceInPath = (pathArray: string[], url: string) => {
@@ -34,7 +35,6 @@ const addOrgDocumentsToDB = async (
     for (let i = 0; i < pathArray.length - 1; i++) {
       ref = ref[pathArray[i]];
     }
-    console.log('Url', url);
 
     ref[pathArray[pathArray.length - 1]] = url;
   };
@@ -61,35 +61,37 @@ const addOrgDocumentsToDB = async (
 
   // handle keyContactPerson separately for keyPersonProofOfId
   if ('keyPersonProofOfId' in fileMap) {
-    fieldMapping['keyPersonProofOfId'] = [
-      'keyContactPerson',
-      'keyPersonProofOfId',
-    ];
+    fieldMapping['keyPersonProofOfId'] = ['keyContactPerson', 'proofOfId'];
   } else {
-    updatedData.keyContactPerson.keyPersonProofOfId = fileMap.proofOfId;
+    updatedData.keyContactPerson.proofOfId = fileMap.proofOfId;
   }
 
   // handle level1User separately for level1PersonProofOfId
   if ('level1PersonProofOfId' in fileMap) {
-    fieldMapping['level1PersonProofOfId'] = [
-      'level1User',
-      'level1PersonProofOfId',
-    ];
+    fieldMapping['level1PersonProofOfId'] = ['level1User', 'proofOfId'];
   } else {
-    updatedData.level1User.level1PersonProofOfId = fileMap.proofOfId;
+    updatedData.level1User.proofOfId = fileMap.proofOfId;
   }
 
+  // Replace file objects in `data` with their Cloudinary URLs
   for (const field in fieldMapping) {
     if (fileMap[field]) {
       replaceInPath(fieldMapping[field], fileMap[field]);
     }
   }
 
-  console.log('Updated Data:', updatedData);
+  // find user id from db
+  const userId = await User.findOne({ email: user.email }).select('_id');
+
+  // add userId to updatedData
+  if (userId) {
+    updatedData.user = userId?._id;
+  }
+  // console.log('Updated Data:', updatedData);
 
   // Save to database (or return result)
-  // const result = await Employer.create(updatedData);
-  return null;
+  const result = await Employer.create(updatedData);
+  return result;
 };
 
 export const EmployerServices = {
