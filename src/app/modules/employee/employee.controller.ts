@@ -18,7 +18,7 @@ const addEmployeeDocuments = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
-    message: 'Organization registered successfully',
+    message: 'Employee data added successfully',
     data: result,
   });
 });

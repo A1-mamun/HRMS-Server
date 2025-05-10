@@ -13,13 +13,13 @@ const addOrgDocumentsToDB = async (
   const fileMap: Record<string, string> = {};
 
   if (files) {
-    const imagesToUpload = files.map((file) => ({
-      imageName: `org_${file.fieldname}_${Date.now()}`,
+    const filesToUpload = files.map((file) => ({
+      imageName: `employee_${file.fieldname}_${Date.now()}`,
       path: file.path,
     }));
 
-    const uploadedImages = await sendImagesToCloudinary(imagesToUpload);
-    uploadedImages.forEach((img, idx) => {
+    const uploadedFiles = await sendImagesToCloudinary(filesToUpload);
+    uploadedFiles.forEach((img, idx) => {
       fileMap[files[idx].fieldname] = img.secure_url as string;
     });
   }
