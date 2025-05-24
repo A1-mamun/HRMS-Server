@@ -9,6 +9,7 @@ import {
   TJobDetails,
   TNationalIdDetails,
   TNextOfKinDetails,
+  TOtherDetails,
   TPassportDetails,
   TPayDetails,
   TPayStructure,
@@ -17,20 +18,28 @@ import {
   TTrainingDetails,
   TVisaDetails,
 } from './employee.interface';
+import { MaritalStatus, Nationalies } from './employee.constant';
 
 const PersonalDetailsSchema = new Schema<TPersonalDetails>(
   {
-    employeeCode: String,
-    firstName: String,
+    employeeCode: {
+      type: String,
+      required: [true, 'Employee code is required'],
+    },
+    firstName: { type: String, required: [true, 'First name is required'] },
     middleName: String,
-    lastName: String,
+    lastName: { type: String, required: [true, 'Last name is required'] },
     gender: String,
     niNumber: String,
     dateOfBirth: String,
-    maritalStatus: String,
-    nationality: String,
-    email: String,
-    contactNo: String,
+    maritalStatus: { type: String, enum: MaritalStatus },
+    nationality: { type: String, enum: Nationalies },
+    email: {
+      type: String,
+      unique: true,
+      required: [true, 'Login email is required'],
+    },
+    contactNo: { type: String, required: [true, 'Contact no is required'] },
     alternativeNo: String,
   },
   { _id: false },
@@ -51,12 +60,39 @@ const ServiceDetailsSchema = new Schema<TServiceDetails>(
   { _id: false },
 );
 
-const TrainingDetailsSchema = new Schema<TTrainingDetails>(
+const EducationDetailSchema = new Schema<TEducationDetails>(
   {
-    department: String,
+    qualification: String,
+    subject: String,
+    institutionName: String,
+    awardingBody: String,
+    yearOfPassing: String,
+    percentage: String,
+    grade: String,
+    transcriptDocument: String,
+    certificateDocument: String,
+  },
+  { _id: false },
+);
+
+const JobDetailSchema = new Schema<TJobDetails>(
+  {
+    title: String,
     startDate: String,
     endDate: String,
-    jobDescription: String,
+    experience: String,
+    description: String,
+    responsibilities: String,
+  },
+  { _id: false },
+);
+
+const TrainingDetailsSchema = new Schema<TTrainingDetails>(
+  {
+    title: String,
+    startDate: String,
+    endDate: String,
+    description: String,
   },
   { _id: false },
 );
@@ -106,7 +142,14 @@ const PassportDetailsSchema = new Schema<TPassportDetails>(
     eligibleReviewDate: String,
     document: String,
     remarks: String,
-    isCurrentStatus: Boolean,
+    isCurrentStatus: {
+      type: String,
+      enum: {
+        values: ['yes', 'no'],
+        message: '{VALUE} is not supported',
+      },
+      required: [true, 'Passport Status Is Current? is required'],
+    },
   },
   { _id: false },
 );
@@ -123,7 +166,14 @@ const VisaDetailsSchema = new Schema<TVisaDetails>(
     frontsideDocument: String,
     backsideDocument: String,
     remarks: String,
-    isCurrentStatus: Boolean,
+    isCurrentStatus: {
+      type: String,
+      enum: {
+        values: ['yes', 'no'],
+        message: '{VALUE} is not supported',
+      },
+      required: [true, 'Visa Status Is Current? is required'],
+    },
   },
   { _id: false },
 );
@@ -137,7 +187,12 @@ const EussDetailsSchema = new Schema<TEussDetails>(
     eligibleReviewDate: String,
     document: String,
     remarks: String,
-    isCurrentStatus: Boolean,
+    isCurrentStatus: {
+      type: String,
+      enum: {
+        values: ['yes', 'no'],
+      },
+    },
   },
   { _id: false },
 );
@@ -152,7 +207,12 @@ const DbsDetailsSchema = new Schema<TDBSDetails>(
     eligibleReviewDate: String,
     document: String,
     remarks: String,
-    isCurrentStatus: Boolean,
+    isCurrentStatus: {
+      type: String,
+      enum: {
+        values: ['yes', 'no'],
+      },
+    },
   },
   { _id: false },
 );
@@ -167,7 +227,31 @@ const NationalIdDetailsSchema = new Schema<TNationalIdDetails>(
     eligibleReviewDate: String,
     document: String,
     remarks: String,
-    isCurrentStatus: Boolean,
+    isCurrentStatus: {
+      type: String,
+      enum: {
+        values: ['yes', 'no'],
+      },
+    },
+  },
+  { _id: false },
+);
+
+const OtherDetailsSchema = new Schema<TOtherDetails>(
+  {
+    documentName: String,
+    referenceNo: String,
+    issueDate: String,
+    expiryDate: String,
+    eligibleReviewDate: String,
+    document: String,
+    remarks: String,
+    isCurrentStatus: {
+      type: String,
+      enum: {
+        values: ['yes', 'no'],
+      },
+    },
   },
   { _id: false },
 );
@@ -201,37 +285,12 @@ const PayStructureSchema = new Schema<TPayStructure>(
   { _id: false },
 );
 
-const EducationDetailSchema = new Schema<TEducationDetails>(
-  {
-    qualification: String,
-    subject: String,
-    institutionName: String,
-    awardingBody: String,
-    yearOfPassing: String,
-    percentage: String,
-    grade: String,
-    transcriptDocument: String,
-    certificateDocument: String,
-  },
-  { _id: false },
-);
-
-const JobDetailSchema = new Schema<TJobDetails>(
-  {
-    jobTitle: String,
-    startDate: String,
-    endDate: String,
-    yearsOfExperience: String,
-    jobDescription: String,
-    responsibilities: String,
-  },
-  { _id: false },
-);
-
 const EmployeeSchema = new Schema<TEmployee>({
   personalDetails: PersonalDetailsSchema,
   serviceDetails: ServiceDetailsSchema,
-  trainingDetails: TrainingDetailsSchema,
+  educationDetails: [EducationDetailSchema],
+  jobDetails: [JobDetailSchema],
+  trainingDetails: [TrainingDetailsSchema],
   nextOfKinDetails: NextOfKinDetailsSchema,
   certifiedMembership: CertifiedMembershipSchema,
   contactiInfo: ContactInfoSchema,
@@ -240,10 +299,9 @@ const EmployeeSchema = new Schema<TEmployee>({
   eussDetails: EussDetailsSchema,
   dbsDetails: DbsDetailsSchema,
   nationalIdDetails: NationalIdDetailsSchema,
+  otherDetails: [OtherDetailsSchema],
   payDetails: PayDetailsSchema,
   payStructure: PayStructureSchema,
-  educationDetails: [EducationDetailSchema],
-  jobDetails: [JobDetailSchema],
 });
 
 export const Employee = model<TEmployee>('Employee', EmployeeSchema);

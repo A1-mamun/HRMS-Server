@@ -388,11 +388,32 @@ export type TServiceDetails = {
   profilePicture?: string;
 };
 
+export type TEducationDetails = {
+  qualification?: string;
+  subject?: string;
+  institutionName?: string;
+  awardingBody?: string;
+  yearOfPassing?: string;
+  percentage?: string;
+  grade?: string;
+  transcriptDocument?: string;
+  certificateDocument?: string;
+};
+
+export type TJobDetails = {
+  title?: string;
+  startDate?: string;
+  endDate?: string;
+  experience?: string;
+  description?: string;
+  responsibilities?: string;
+};
+
 export type TTrainingDetails = {
-  department: string;
-  startDate: string;
-  endDate: string;
-  jobDescription: string;
+  title?: string;
+  startDate?: string;
+  endDate?: string;
+  description?: string;
 };
 
 export type TNextOfKinDetails = {
@@ -482,6 +503,18 @@ export type TNationalIdDetails = {
   isCurrentStatus?: 'Yes' | 'No';
 };
 
+export type TOtherDetails = {
+  documentName?: string;
+  referenceNo?: string;
+  nationality?: TNationalities;
+  issueDate?: string;
+  expiryDate?: string;
+  eligibleReviewDate?: string;
+  document?: string;
+  remarks?: string;
+  isCurrentStatus?: 'Yes' | 'No';
+};
+
 export type TPayDetails = {
   paymentGroup?: 'Group 1' | 'Group 2';
   wedgesPaymentMode?: 'Pay 1' | 'Pay 2';
@@ -504,31 +537,13 @@ export type TPayStructure = {
   taxablePayment?: string;
   deductions?: string;
 };
-export type TEducationDetails = {
-  qualification?: string;
-  subject?: string;
-  institutionName?: string;
-  awardingBody?: string;
-  yearOfPassing?: string;
-  percentage?: string;
-  grade?: string;
-  transcriptDocument?: string | null;
-  certificateDocument?: string | null;
-};
-
-export type TJobDetails = {
-  jobTitle?: string;
-  startDate?: string;
-  endDate?: string;
-  yearsOfExperience?: string;
-  jobDescription?: string;
-  responsibilities?: string;
-};
 
 export type TEmployee = {
   personalDetails: TPersonalDetails;
   serviceDetails: TServiceDetails;
-  trainingDetails: TTrainingDetails;
+  educationDetails: TEducationDetails[];
+  jobDetails: TJobDetails[];
+  trainingDetails: TTrainingDetails[];
   nextOfKinDetails: TNextOfKinDetails;
   certifiedMembership: TCertifiedMembership;
   contactiInfo: TContactInfo;
@@ -537,8 +552,7 @@ export type TEmployee = {
   eussDetails: TEussDetails;
   dbsDetails: TDBSDetails;
   nationalIdDetails: TNationalIdDetails;
+  otherDetails: TOtherDetails[];
   payDetails: TPayDetails;
   payStructure: TPayStructure;
-  educationDetails: TEducationDetails[];
-  jobDetails: TJobDetails[];
 };
