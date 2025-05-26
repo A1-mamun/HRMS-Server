@@ -173,6 +173,11 @@ const NationalIdDetailsSchema = DocumentSchema.extend({
     .optional(),
 });
 
+const OtherDetailsSchema = DocumentSchema.extend({
+  documentName: z.string().optional(),
+  referenceNo: z.string().optional(),
+});
+
 const PayDetailsSchema = z.object({
   paymentGroup: z.string().optional(),
   wedgesPaymentMode: z.string().optional(),
@@ -199,7 +204,9 @@ const PayStructureSchema = z.object({
 export const employeeValidationSchema = z.object({
   personalDetails: PersonalDetailsSchema,
   serviceDetails: ServiceDetailsSchema,
-  trainingDetails: TrainingDetailsSchema,
+  educationDetails: z.array(EducationDetailSchema),
+  jobDetails: z.array(JobDetailSchema),
+  trainingDetails: z.array(TrainingDetailsSchema),
   nextOfKinDetails: NextOfKinDetailsSchema,
   certifiedMembership: CertifiedMembershipSchema,
   contactiInfo: ContactInfoSchema,
@@ -208,10 +215,9 @@ export const employeeValidationSchema = z.object({
   eussDetails: EussDetailsSchema,
   dbsDetails: DbsDetailsSchema,
   nationalIdDetails: NationalIdDetailsSchema,
+  otherDetails: z.array(OtherDetailsSchema),
   payDetails: PayDetailsSchema,
   payStructure: PayStructureSchema,
-  educationDetails: z.array(EducationDetailSchema),
-  jobDetails: z.array(JobDetailSchema),
 });
 
 export const EmployeeValidations = {
