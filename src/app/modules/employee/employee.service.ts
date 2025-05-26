@@ -2,6 +2,7 @@
 import { JwtPayload } from 'jsonwebtoken';
 import { sendImagesToCloudinary } from '../../utils/sendImageToCloudinary';
 import { TEmployee } from './employee.interface';
+import { Employee } from './employee.model';
 
 // import { Employer } from './employer.model';
 
@@ -77,10 +78,13 @@ const addEmployeeDocumentsToDB = async (
   };
 
   updateArrayObjectFields(updatedData, fileMap, 'educationalDetails');
+  updateArrayObjectFields(updatedData, fileMap, 'otherDetails');
 
   console.log('Updated Data:', updatedData);
 
-  return null;
+  // Save to database (or return result)
+  const result = await Employee.create(updatedData);
+  return result;
 };
 
 export const EmployeeServices = {

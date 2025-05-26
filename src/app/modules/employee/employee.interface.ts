@@ -534,14 +534,14 @@ export type TPayDetails = {
 };
 
 export type TPayStructure = {
-  taxablePayment?: string;
-  deductions?: string;
+  taxablePayment?: string[];
+  deductions?: string[];
 };
 
 export type TEmployee = {
   personalDetails: TPersonalDetails;
   serviceDetails: TServiceDetails;
-  educationDetails: TEducationDetails[];
+  educationalDetails: TEducationDetails[];
   jobDetails: TJobDetails[];
   trainingDetails: TTrainingDetails[];
   nextOfKinDetails: TNextOfKinDetails;

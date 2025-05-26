@@ -279,8 +279,8 @@ const PayDetailsSchema = new Schema<TPayDetails>(
 
 const PayStructureSchema = new Schema<TPayStructure>(
   {
-    taxablePayment: String,
-    deductions: String,
+    taxablePayment: [String],
+    deductions: [String],
   },
   { _id: false },
 );
@@ -288,7 +288,7 @@ const PayStructureSchema = new Schema<TPayStructure>(
 const EmployeeSchema = new Schema<TEmployee>({
   personalDetails: PersonalDetailsSchema,
   serviceDetails: ServiceDetailsSchema,
-  educationDetails: [EducationDetailSchema],
+  educationalDetails: [EducationDetailSchema],
   jobDetails: [JobDetailSchema],
   trainingDetails: [TrainingDetailsSchema],
   nextOfKinDetails: NextOfKinDetailsSchema,

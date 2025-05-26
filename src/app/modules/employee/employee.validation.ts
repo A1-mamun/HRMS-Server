@@ -154,7 +154,7 @@ const DocumentSchema = z.object({
   expiryDate: z.string().optional(),
   eligibleReviewDate: z.string().optional(),
   remarks: z.string().optional(),
-  isCurrentStatus: z.enum(['yes', 'no']),
+  isCurrentStatus: z.enum(['yes', 'no']).optional(),
 });
 
 const EussDetailsSchema = DocumentSchema.extend({
@@ -197,27 +197,29 @@ const PayDetailsSchema = z.object({
 });
 
 const PayStructureSchema = z.object({
-  taxablePayment: z.string().optional(),
-  deductions: z.string().optional(),
+  taxablePayment: z.array(z.string()).optional(),
+  deductions: z.array(z.string()).optional(),
 });
 
 export const employeeValidationSchema = z.object({
-  personalDetails: PersonalDetailsSchema,
-  serviceDetails: ServiceDetailsSchema,
-  educationDetails: z.array(EducationDetailSchema),
-  jobDetails: z.array(JobDetailSchema),
-  trainingDetails: z.array(TrainingDetailsSchema),
-  nextOfKinDetails: NextOfKinDetailsSchema,
-  certifiedMembership: CertifiedMembershipSchema,
-  contactiInfo: ContactInfoSchema,
-  pasportDetails: PassportDetailsSchema,
-  visaDetails: VisaDetailsSchema,
-  eussDetails: EussDetailsSchema,
-  dbsDetails: DbsDetailsSchema,
-  nationalIdDetails: NationalIdDetailsSchema,
-  otherDetails: z.array(OtherDetailsSchema),
-  payDetails: PayDetailsSchema,
-  payStructure: PayStructureSchema,
+  body: z.object({
+    personalDetails: PersonalDetailsSchema,
+    serviceDetails: ServiceDetailsSchema,
+    educationalDetails: z.array(EducationDetailSchema),
+    jobDetails: z.array(JobDetailSchema),
+    trainingDetails: z.array(TrainingDetailsSchema),
+    nextOfKinDetails: NextOfKinDetailsSchema,
+    certifiedMembership: CertifiedMembershipSchema,
+    contactiInfo: ContactInfoSchema,
+    pasportDetails: PassportDetailsSchema,
+    visaDetails: VisaDetailsSchema,
+    eussDetails: EussDetailsSchema,
+    dbsDetails: DbsDetailsSchema,
+    nationalIdDetails: NationalIdDetailsSchema,
+    otherDetails: z.array(OtherDetailsSchema),
+    payDetails: PayDetailsSchema,
+    payStructure: PayStructureSchema,
+  }),
 });
 
 export const EmployeeValidations = {
