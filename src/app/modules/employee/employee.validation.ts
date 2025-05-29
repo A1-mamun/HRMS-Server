@@ -203,22 +203,33 @@ const PayStructureSchema = z.object({
 
 export const employeeValidationSchema = z.object({
   body: z.object({
-    personalDetails: PersonalDetailsSchema,
-    serviceDetails: ServiceDetailsSchema,
-    educationalDetails: z.array(EducationDetailSchema),
-    jobDetails: z.array(JobDetailSchema),
-    trainingDetails: z.array(TrainingDetailsSchema),
-    nextOfKinDetails: NextOfKinDetailsSchema,
-    certifiedMembership: CertifiedMembershipSchema,
-    contactiInfo: ContactInfoSchema,
-    pasportDetails: PassportDetailsSchema,
-    visaDetails: VisaDetailsSchema,
-    eussDetails: EussDetailsSchema,
-    dbsDetails: DbsDetailsSchema,
-    nationalIdDetails: NationalIdDetailsSchema,
-    otherDetails: z.array(OtherDetailsSchema),
-    payDetails: PayDetailsSchema,
-    payStructure: PayStructureSchema,
+    credentials: z.object({
+      email: z
+        .string({ required_error: 'Email is required' })
+        .min(1, 'Email is required')
+        .email({ message: 'Invalid email address' }),
+      password: z
+        .string({ required_error: 'Password is required' })
+        .min(1, 'Password is required'),
+    }),
+    employeeData: z.object({
+      personalDetails: PersonalDetailsSchema,
+      serviceDetails: ServiceDetailsSchema,
+      educationalDetails: z.array(EducationDetailSchema),
+      jobDetails: z.array(JobDetailSchema),
+      trainingDetails: z.array(TrainingDetailsSchema),
+      nextOfKinDetails: NextOfKinDetailsSchema,
+      certifiedMembership: CertifiedMembershipSchema,
+      contactiInfo: ContactInfoSchema,
+      pasportDetails: PassportDetailsSchema,
+      visaDetails: VisaDetailsSchema,
+      eussDetails: EussDetailsSchema,
+      dbsDetails: DbsDetailsSchema,
+      nationalIdDetails: NationalIdDetailsSchema,
+      otherDetails: z.array(OtherDetailsSchema),
+      payDetails: PayDetailsSchema,
+      payStructure: PayStructureSchema,
+    }),
   }),
 });
 

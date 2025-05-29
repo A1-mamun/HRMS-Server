@@ -6,10 +6,6 @@ import { Role } from './user.constant';
 
 const userSchema = new Schema<TUser, UserModel>(
   {
-    name: {
-      type: String,
-      required: [true, 'Name is required'],
-    },
     email: {
       type: String,
       required: [true, 'Email is required'],
@@ -51,11 +47,11 @@ userSchema.pre('save', async function (next) {
 
 // set password to empty string before sending response
 userSchema.post('save', function (doc, next) {
+  doc.password = '';
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const modifiedDoc = doc as any;
   modifiedDoc._doc = {
     _id: doc._id,
-    name: doc.name,
     email: doc.email,
   };
   next();

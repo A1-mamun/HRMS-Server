@@ -286,6 +286,12 @@ const PayStructureSchema = new Schema<TPayStructure>(
 );
 
 const EmployeeSchema = new Schema<TEmployee>({
+  user: {
+    type: Schema.Types.ObjectId,
+    required: [true, 'User id is required'],
+    unique: true,
+    ref: 'User',
+  },
   personalDetails: PersonalDetailsSchema,
   serviceDetails: ServiceDetailsSchema,
   educationalDetails: [EducationDetailSchema],
