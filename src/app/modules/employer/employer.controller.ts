@@ -9,10 +9,12 @@ const addOrgDocuments = catchAsync(async (req, res) => {
     Array.isArray(req.files) ? req.files : []
   ) as Express.Multer.File[];
 
+  const { credentials, employerData } = req.body;
+
   const result = await EmployerServices.addOrgDocumentsToDB(
     files,
-    req.body,
-    req.user,
+    credentials,
+    employerData,
   );
 
   sendResponse(res, {

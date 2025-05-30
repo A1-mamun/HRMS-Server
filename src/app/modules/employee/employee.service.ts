@@ -8,6 +8,7 @@ import { TEmployee } from './employee.interface';
 import { Employee } from './employee.model';
 import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
+import { User } from '../user/user.model';
 
 // import { Employer } from './employer.model';
 
@@ -76,7 +77,7 @@ const addEmployeeDocumentsToDB = async (
     session.startTransaction();
 
     // Create user in the database
-    const newUser = await Employee.create([userData], { session });
+    const newUser = await User.create([userData], { session });
 
     if (!newUser || newUser.length === 0) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user');

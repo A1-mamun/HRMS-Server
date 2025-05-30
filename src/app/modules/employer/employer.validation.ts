@@ -79,12 +79,23 @@ const tradingHoursValidationSchema = z.object({
 // Define Zod validation for Employer Schema
 export const employerValidationSchema = z.object({
   body: z.object({
-    organisationDetails: organisationDetailsValidationSchema,
-    authorisedPerson: personValidationSchema,
-    keyContactPerson: personValidationSchema,
-    level1User: personValidationSchema,
-    organisationAddress: addressValidationSchema.optional(),
-    tradingHours: z.array(tradingHoursValidationSchema).optional(),
+    credentials: z.object({
+      email: z
+        .string({ required_error: 'Email is required' })
+        .min(1, 'Email is required')
+        .email({ message: 'Invalid email address' }),
+      password: z
+        .string({ required_error: 'Password is required' })
+        .min(1, 'Password is required'),
+    }),
+    employerData: z.object({
+      organisationDetails: organisationDetailsValidationSchema,
+      authorisedPerson: personValidationSchema,
+      keyContactPerson: personValidationSchema,
+      level1User: personValidationSchema,
+      organisationAddress: addressValidationSchema.optional(),
+      tradingHours: z.array(tradingHoursValidationSchema).optional(),
+    }),
   }),
 });
 

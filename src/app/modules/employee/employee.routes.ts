@@ -11,8 +11,8 @@ import { EmployeeValidations } from './employee.validation';
 const router = Router();
 
 router.post(
-  '/add-employee-documents',
-  auth(USER_ROLE.employee),
+  '/create-employee',
+  auth(USER_ROLE.employer),
   upload.any(),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = JSON.parse(req.body.data);

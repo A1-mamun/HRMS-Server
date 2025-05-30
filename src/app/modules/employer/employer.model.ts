@@ -248,6 +248,7 @@ const employerSchema = new Schema<TEmployer>(
     user: {
       type: Schema.Types.ObjectId,
       ref: 'User',
+      unique: true,
       required: [true, 'User ID is required'],
     },
     organisationDetails: {

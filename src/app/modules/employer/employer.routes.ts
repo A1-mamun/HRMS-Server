@@ -9,8 +9,8 @@ import { USER_ROLE } from '../user/user.constant';
 const router = Router();
 
 router.post(
-  '/add-org-documents',
-  auth(USER_ROLE.employer),
+  '/create-organisation',
+  auth(USER_ROLE.admin),
   upload.any(),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = JSON.parse(req.body.data);
