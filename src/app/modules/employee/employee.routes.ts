@@ -19,7 +19,13 @@ router.post(
     next();
   },
   validateRequest(EmployeeValidations.employeeValidationSchema),
-  EmployeeControllers.addEmployeeDocuments,
+  EmployeeControllers.createEmployee,
+);
+
+router.get(
+  '/organisation-employees',
+  auth(USER_ROLE.employer),
+  EmployeeControllers.getOrganisationEmployees,
 );
 
 export const EmployeeRoutes = router;

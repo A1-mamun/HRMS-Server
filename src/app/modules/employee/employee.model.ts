@@ -292,6 +292,11 @@ const EmployeeSchema = new Schema<TEmployee>({
     unique: true,
     ref: 'User',
   },
+  organisation: {
+    type: Schema.Types.ObjectId,
+    required: [true, 'Organisation user id is required'],
+    ref: 'User',
+  },
   personalDetails: PersonalDetailsSchema,
   serviceDetails: ServiceDetailsSchema,
   educationalDetails: [EducationDetailSchema],

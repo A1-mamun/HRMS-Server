@@ -542,6 +542,7 @@ export type TPayStructure = {
 
 export type TEmployee = {
   user: Types.ObjectId;
+  organisation: Types.ObjectId;
   personalDetails: TPersonalDetails;
   serviceDetails: TServiceDetails;
   educationalDetails: TEducationDetails[];

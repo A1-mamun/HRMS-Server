@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// import { JwtPayload } from 'jsonwebtoken';
 
 import mongoose from 'mongoose';
 import { sendImagesToCloudinary } from '../../utils/sendImageToCloudinary';
@@ -9,13 +8,15 @@ import { Employee } from './employee.model';
 import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 import { User } from '../user/user.model';
+import QueryBuilder from '../../builder/QueryBuilder';
 
 // import { Employer } from './employer.model';
 
-const addEmployeeDocumentsToDB = async (
+const createEmployeeToDB = async (
   files: any[],
   credentials: { email: string; password: string },
   employeeData: TEmployee,
+  organisationEmail: string,
 ) => {
   // create a user object
   const userData: Partial<TUser> = {};
@@ -110,6 +111,13 @@ const addEmployeeDocumentsToDB = async (
     // set user reference in employeeData
     employeeData.user = newUser[0]._id;
 
+    // set organisation reference in employeeData
+    const organisationUser = await User.findOne({ email: organisationEmail });
+    if (!organisationUser) {
+      throw new AppError(httpStatus.NOT_FOUND, 'Organisation not found');
+    }
+    employeeData.organisation = organisationUser._id;
+
     // Create employee in the database
     const newEmployee = await Employee.create([employeeData], { session });
 
@@ -129,6 +137,34 @@ const addEmployeeDocumentsToDB = async (
   }
 };
 
+const getOrganisationEmployeesFromDB = async (
+  organisationEmail: string,
+  query: Record<string, unknown>,
+) => {
+  const user = await User.findOne({ email: organisationEmail });
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found !');
+  }
+
+  const organisationEmployeeQuery = new QueryBuilder(
+    Employee.find({ organisation: user._id }),
+    query,
+  )
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await organisationEmployeeQuery.modelQuery;
+  const meta = await organisationEmployeeQuery.countTotal();
+
+  return {
+    meta,
+    result,
+  };
+};
 export const EmployeeServices = {
-  addEmployeeDocumentsToDB,
+  createEmployeeToDB,
+  getOrganisationEmployeesFromDB,
 };

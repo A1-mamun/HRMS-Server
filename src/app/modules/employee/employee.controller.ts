@@ -4,17 +4,19 @@ import { Express } from 'express';
 import httpStatus from 'http-status';
 import { EmployeeServices } from './employee.service';
 
-const addEmployeeDocuments = catchAsync(async (req, res) => {
+const createEmployee = catchAsync(async (req, res) => {
   const files = (
     Array.isArray(req.files) ? req.files : []
   ) as Express.Multer.File[];
 
   const { credentials, employeeData } = req.body;
+  const organisationEmail = req.user.email;
 
-  const result = await EmployeeServices.addEmployeeDocumentsToDB(
+  const result = await EmployeeServices.createEmployeeToDB(
     files,
     credentials,
     employeeData,
+    organisationEmail,
   );
 
   sendResponse(res, {
@@ -25,6 +27,24 @@ const addEmployeeDocuments = catchAsync(async (req, res) => {
   });
 });
 
+const getOrganisationEmployees = catchAsync(async (req, res) => {
+  const organisationEmail = req.user.email;
+
+  const result = await EmployeeServices.getOrganisationEmployeesFromDB(
+    organisationEmail,
+    req.query,
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Organisation employees retrived succesfully',
+    meta: result.meta,
+    data: result.result,
+  });
+});
+
 export const EmployeeControllers = {
-  addEmployeeDocuments,
+  createEmployee,
+  getOrganisationEmployees,
 };
