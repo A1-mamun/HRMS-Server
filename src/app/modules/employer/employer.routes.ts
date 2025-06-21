@@ -20,4 +20,10 @@ router.post(
   EmployerControllers.addOrgDocuments,
 );
 
+router.get(
+  '/organisations',
+  auth(USER_ROLE.admin),
+  EmployerControllers.getAllOrganisations,
+);
+
 export const EmployerRoutes = router;

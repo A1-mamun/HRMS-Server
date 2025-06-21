@@ -8,6 +8,7 @@ import { TUser } from '../user/user.interface';
 import mongoose from 'mongoose';
 import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
+import QueryBuilder from '../../builder/QueryBuilder';
 
 const addOrgDocumentsToDB = async (
   files: any[],
@@ -122,6 +123,22 @@ const addOrgDocumentsToDB = async (
   }
 };
 
+const getAllOrganisationsFromDB = async (query: Record<string, unknown>) => {
+  const organisationsQuery = new QueryBuilder(Employer.find(), query)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await organisationsQuery.modelQuery;
+  const meta = await organisationsQuery.countTotal();
+  return {
+    result,
+    meta,
+  };
+};
+
 export const EmployerServices = {
   addOrgDocumentsToDB,
+  getAllOrganisationsFromDB,
 };

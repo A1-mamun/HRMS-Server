@@ -25,6 +25,18 @@ const addOrgDocuments = catchAsync(async (req, res) => {
   });
 });
 
+const getAllOrganisations = catchAsync(async (req, res) => {
+  const result = await EmployerServices.getAllOrganisationsFromDB(req.query);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Organisation employees retrived succesfully',
+    meta: result.meta,
+    data: result.result,
+  });
+});
+
 export const EmployerControllers = {
   addOrgDocuments,
+  getAllOrganisations,
 };
