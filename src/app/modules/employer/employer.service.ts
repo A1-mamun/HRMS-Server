@@ -10,7 +10,7 @@ import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
 import QueryBuilder from '../../builder/QueryBuilder';
 
-const addOrgDocumentsToDB = async (
+const createOrgainsationToDB = async (
   files: any[],
   credentials: { email: string; password: string },
   employerData: TEmployer,
@@ -99,7 +99,7 @@ const addOrgDocumentsToDB = async (
       }
     }
 
-    console.log('Updated Employer Data:', employerData);
+    // console.log('Updated Employer Data:', employerData);
 
     // set user reference in employerData
     employerData.user = newUser[0]._id;
@@ -138,7 +138,76 @@ const getAllOrganisationsFromDB = async (query: Record<string, unknown>) => {
   };
 };
 
+const updateOrganisationToDB = async (
+  id: string,
+  files: any[],
+  employerData: TEmployer,
+) => {
+  const fileMap: Record<string, string> = {};
+
+  const replaceInPath = (pathArray: string[], url: string) => {
+    let ref: any = employerData;
+    for (let i = 0; i < pathArray.length - 1; i++) {
+      ref = ref?.[pathArray[i]];
+    }
+    if (ref) ref[pathArray[pathArray.length - 1]] = url;
+  };
+
+  const fieldMapping: Record<string, string[]> = {
+    logo: ['organisationDetails', 'logo'],
+    proofOfId: ['authorisedPerson', 'proofOfId'],
+    payeeAccountReference: ['documents', 'payeeAccountReference'],
+    latestRti: ['documents', 'latestRti'],
+    employerLiabilityInsurance: ['documents', 'employerLiabilityInsurance'],
+    proofOfBusinessPremises: ['documents', 'proofOfBusinessPremises'],
+    copyOfLease: ['documents', 'copyOfLease'],
+    businessBankStatement: ['documents', 'businessBankStatement'],
+    signedAnnualAccount: ['documents', 'signedAnnualAccount'],
+    vatCertificate: ['documents', 'vatCertificate'],
+    healthSafetyRating: ['documents', 'healthSafetyRating'],
+    regulatoryBodyCertificate: ['documents', 'regulatoryBodyCertificate'],
+    businessLicense: ['documents', 'businessLicense'],
+    franchiseAgreement: ['documents', 'franchiseAgreement'],
+    governingBodyRegistration: ['documents', 'governingBodyRegistration'],
+    auditedAnnualAccount: ['documents', 'auditedAnnualAccount'],
+    othersDocuments: ['documents', 'othersDocuments'],
+    keyPersonProofOfId: ['keyContactPerson', 'proofOfId'],
+    level1PersonProofOfId: ['level1User', 'proofOfId'],
+  };
+
+  if (files && files.length > 0) {
+    const filesToUpload = files.map((file) => ({
+      imageName: `employer_${file.fieldname}_${Date.now()}`,
+      path: file.path,
+    }));
+
+    const uploadedFiles = await sendImagesToCloudinary(filesToUpload);
+
+    uploadedFiles.forEach((img, idx) => {
+      fileMap[files[idx].fieldname] = img.secure_url as string;
+    });
+
+    // Replace file URLs in nested employerData
+    for (const field in fieldMapping) {
+      if (fileMap[field]) {
+        replaceInPath(fieldMapping[field], fileMap[field]);
+      }
+    }
+  }
+
+  const updatedEmployer = await Employer.findByIdAndUpdate(id, employerData, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!updatedEmployer) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Organisation not found');
+  }
+  return updatedEmployer;
+};
+
 export const EmployerServices = {
-  addOrgDocumentsToDB,
+  createOrgainsationToDB,
   getAllOrganisationsFromDB,
+  updateOrganisationToDB,
 };

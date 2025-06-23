@@ -1,11 +1,8 @@
 import { model, Schema } from 'mongoose';
 import {
   TAddress,
-  // TAuthorisedPerson,
   TDocument,
   TEmployer,
-  // TKeyContactPerson,
-  // TLevel1Person,
   TOrganisationDetails,
   TPerson,
   TTradingHours,
@@ -101,84 +98,6 @@ const personSchema = new Schema<TPerson>(
   },
   { _id: false },
 );
-
-// const AuthorisedPersonSchema = new Schema<TAuthorisedPerson>(
-//   {
-//     firstName: { type: String, required: [true, 'First name is required'] },
-//     lastName: { type: String, required: [true, 'Last name is required'] },
-//     designation: { type: String, required: [true, 'Designation is required'] },
-//     phoneNo: { type: String, required: [true, 'Phone number is required'] },
-//     email: {
-//       type: String,
-//       required: [true, 'Email is required'],
-//       unique: true,
-//     },
-//     criminalHistory: {
-//       type: String,
-//       enum: {
-//         values: ['Yes', 'No'],
-//         message: '{VALUE} is not supported',
-//       },
-//       required: [true, 'Criminal history is required'],
-//     },
-//     proofOfId: { type: String, required: [true, 'Proof of ID is required'] },
-//   },
-//   { _id: false },
-// );
-
-// const keyContactPersonSchema = new Schema<TKeyContactPerson>(
-//   {
-//     firstName: { type: String, required: [true, 'First name is required'] },
-//     lastName: { type: String, required: [true, 'Last name is required'] },
-//     designation: { type: String, required: [true, 'Designation is required'] },
-//     phoneNo: { type: String, required: [true, 'Phone number is required'] },
-//     email: {
-//       type: String,
-//       required: [true, 'Email is required'],
-//       unique: true,
-//     },
-//     criminalHistory: {
-//       type: String,
-//       enum: {
-//         values: ['Yes', 'No'],
-//         message: '{VALUE} is not supported',
-//       },
-//       required: [true, 'Criminal history is required'],
-//     },
-//     keyPersonProofOfId: {
-//       type: String,
-//       required: [true, 'Proof of ID is required'],
-//     },
-//   },
-//   { _id: false },
-// );
-
-// const level1PersonSchema = new Schema<TLevel1Person>(
-//   {
-//     firstName: { type: String, required: [true, 'First name is required'] },
-//     lastName: { type: String, required: [true, 'Last name is required'] },
-//     designation: { type: String, required: [true, 'Designation is required'] },
-//     phoneNo: { type: String, required: [true, 'Phone number is required'] },
-//     email: {
-//       type: String,
-//       required: [true, 'Email is required'],
-//       unique: true,
-//     },
-//     criminalHistory: {
-//       type: String,
-//       enum: {
-//         values: ['Yes', 'No'],
-//         message: '{VALUE} is not supported',
-//       },
-//       required: [true, 'Criminal history is required'],
-//     },
-//     level1PersonProofOfId: {
-//       type: String,
-//       required: [true, 'Proof of ID is required'],
-//     },
-//   },
-//   { _id: false },
-// );
 
 const addressSchema = new Schema<TAddress>(
   {

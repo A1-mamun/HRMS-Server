@@ -4,14 +4,14 @@ import { EmployerServices } from './employer.service';
 import { Express } from 'express';
 import httpStatus from 'http-status';
 
-const addOrgDocuments = catchAsync(async (req, res) => {
+const createOrganisation = catchAsync(async (req, res) => {
   const files = (
     Array.isArray(req.files) ? req.files : []
   ) as Express.Multer.File[];
 
   const { credentials, employerData } = req.body;
 
-  const result = await EmployerServices.addOrgDocumentsToDB(
+  const result = await EmployerServices.createOrgainsationToDB(
     files,
     credentials,
     employerData,
@@ -36,7 +36,27 @@ const getAllOrganisations = catchAsync(async (req, res) => {
   });
 });
 
+const updateOrganisation = catchAsync(async (req, res) => {
+  const files = (
+    Array.isArray(req.files) ? req.files : []
+  ) as Express.Multer.File[];
+  const { employerData } = req.body;
+  const { id } = req.params;
+  const result = await EmployerServices.updateOrganisationToDB(
+    id,
+    files,
+    employerData,
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Organisation updated successfully',
+    data: result,
+  });
+});
+
 export const EmployerControllers = {
-  addOrgDocuments,
+  createOrganisation,
   getAllOrganisations,
+  updateOrganisation,
 };

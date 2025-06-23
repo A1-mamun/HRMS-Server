@@ -17,13 +17,25 @@ router.post(
     next();
   },
   validateRequest(EmployerValidations.employerValidationSchema),
-  EmployerControllers.addOrgDocuments,
+  EmployerControllers.createOrganisation,
 );
 
 router.get(
   '/organisations',
   auth(USER_ROLE.admin),
   EmployerControllers.getAllOrganisations,
+);
+
+router.patch(
+  '/update-organisation/:id',
+  auth(USER_ROLE.admin),
+  upload.any(),
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = JSON.parse(req.body.data);
+    next();
+  },
+  validateRequest(EmployerValidations.employerUpdateValidationSchema),
+  EmployerControllers.updateOrganisation,
 );
 
 export const EmployerRoutes = router;

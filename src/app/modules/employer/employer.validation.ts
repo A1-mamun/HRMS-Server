@@ -29,6 +29,10 @@ const organisationDetailsValidationSchema = z.object({
   FacedPenaltyLast3Years: z.enum(['Yes', 'No']),
 });
 
+// Define Zod validation for Organisation Details Update Schema
+const organisationDetailsUpdateValidationSchema =
+  organisationDetailsValidationSchema.partial();
+
 // Define Zod validation for Person Schema
 const personValidationSchema = z.object({
   firstName: z
@@ -58,6 +62,9 @@ const personValidationSchema = z.object({
   proofOfId: z.string().optional(),
 });
 
+// Define Zod validation for Person Update Schema
+const personUpdateValidationSchema = personValidationSchema.partial();
+
 // Define Zod validation for Address Schema
 const addressValidationSchema = z.object({
   postCode: z.string().optional(),
@@ -68,6 +75,9 @@ const addressValidationSchema = z.object({
   country: z.string().optional(),
 });
 
+// Define Zod validation for Address Update Schema
+const addressUpdateValidationSchema = addressValidationSchema.partial();
+
 // Define Zod validation for Trading Hours Schema
 const tradingHoursValidationSchema = z.object({
   day: z.enum([...DaysOfWeek] as [string, ...string[]]),
@@ -75,6 +85,10 @@ const tradingHoursValidationSchema = z.object({
   endTime: z.string().optional(),
   status: z.enum(['Open', 'Close']).optional(),
 });
+
+// Define Zod validation for Trading Hours Update Schema
+const tradingHoursUpdateValidationSchema =
+  tradingHoursValidationSchema.partial();
 
 // Define Zod validation for Employer Schema
 export const employerValidationSchema = z.object({
@@ -99,6 +113,21 @@ export const employerValidationSchema = z.object({
   }),
 });
 
+// Define Zod validation for Employer Update Schema
+export const employerUpdateValidationSchema = z.object({
+  body: z.object({
+    employerData: z.object({
+      organisationDetails: organisationDetailsUpdateValidationSchema.optional(),
+      authorisedPerson: personUpdateValidationSchema.optional(),
+      keyContactPerson: personUpdateValidationSchema.optional(),
+      level1User: personUpdateValidationSchema.optional(),
+      organisationAddress: addressUpdateValidationSchema.optional(),
+      tradingHours: z.array(tradingHoursUpdateValidationSchema).optional(),
+    }),
+  }),
+});
+
 export const EmployerValidations = {
   employerValidationSchema,
+  employerUpdateValidationSchema,
 };

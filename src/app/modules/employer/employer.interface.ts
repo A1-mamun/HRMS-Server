@@ -80,18 +80,6 @@ export type TPerson = {
   proofOfId: string;
 };
 
-// export type TAuthorisedPerson = TPerson & {
-//   proofOfId: string;
-// };
-
-// export type TKeyContactPerson = TPerson & {
-//   keyPersonProofOfId: string;
-// };
-
-// export type TLevel1Person = TPerson & {
-//   level1PersonProofOfId: string;
-// };
-
 export type TAddress = {
   postCode: string;
   addressLine1: string;
@@ -129,9 +117,6 @@ export type TDocument = {
 export type TEmployer = {
   user: Types.ObjectId;
   organisationDetails: TOrganisationDetails;
-  // authorisedPerson: TAuthorisedPerson;
-  // keyContactPerson: TKeyContactPerson;
-  // level1User: TLevel1Person;
   authorisedPerson: TPerson;
   keyContactPerson: TPerson;
   level1User: TPerson;
