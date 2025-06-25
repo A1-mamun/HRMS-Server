@@ -30,9 +30,20 @@ const getAllOrganisations = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Organisation employees retrived succesfully',
+    message: 'Organisations retrived succesfully',
     meta: result.meta,
     data: result.result,
+  });
+});
+
+const getSingleOrganisation = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await EmployerServices.getSingleOrganisationFromDB(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Organisation retrieved successfully',
+    data: result,
   });
 });
 
@@ -58,5 +69,6 @@ const updateOrganisation = catchAsync(async (req, res) => {
 export const EmployerControllers = {
   createOrganisation,
   getAllOrganisations,
+  getSingleOrganisation,
   updateOrganisation,
 };

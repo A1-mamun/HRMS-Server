@@ -26,8 +26,14 @@ router.get(
   EmployerControllers.getAllOrganisations,
 );
 
+router.get(
+  '/:id',
+  auth(USER_ROLE.admin, USER_ROLE.employer),
+  EmployerControllers.getSingleOrganisation,
+);
+
 router.patch(
-  '/update-organisation/:id',
+  '/:id',
   auth(USER_ROLE.admin),
   upload.any(),
   (req: Request, res: Response, next: NextFunction) => {

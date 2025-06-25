@@ -138,6 +138,11 @@ const getAllOrganisationsFromDB = async (query: Record<string, unknown>) => {
   };
 };
 
+const getSingleOrganisationFromDB = async (id: string) => {
+  const result = await Employer.findById(id);
+  return result;
+};
+
 const updateOrganisationToDB = async (
   id: string,
   files: any[],
@@ -171,8 +176,6 @@ const updateOrganisationToDB = async (
     governingBodyRegistration: ['documents', 'governingBodyRegistration'],
     auditedAnnualAccount: ['documents', 'auditedAnnualAccount'],
     othersDocuments: ['documents', 'othersDocuments'],
-    keyPersonProofOfId: ['keyContactPerson', 'proofOfId'],
-    level1PersonProofOfId: ['level1User', 'proofOfId'],
   };
 
   if (files && files.length > 0) {
@@ -186,6 +189,20 @@ const updateOrganisationToDB = async (
     uploadedFiles.forEach((img, idx) => {
       fileMap[files[idx].fieldname] = img.secure_url as string;
     });
+
+    // handle keyContactPerson separately for keyPersonProofOfId
+    if ('keyPersonProofOfId' in fileMap) {
+      fieldMapping['keyPersonProofOfId'] = ['keyContactPerson', 'proofOfId'];
+    } else {
+      employerData.keyContactPerson.proofOfId = fileMap.proofOfId;
+    }
+
+    // handle level1User separately for level1PersonProofOfId
+    if ('level1PersonProofOfId' in fileMap) {
+      fieldMapping['level1PersonProofOfId'] = ['level1User', 'proofOfId'];
+    } else {
+      employerData.level1User.proofOfId = fileMap.proofOfId;
+    }
 
     // Replace file URLs in nested employerData
     for (const field in fieldMapping) {
@@ -209,5 +226,6 @@ const updateOrganisationToDB = async (
 export const EmployerServices = {
   createOrgainsationToDB,
   getAllOrganisationsFromDB,
+  getSingleOrganisationFromDB,
   updateOrganisationToDB,
 };
