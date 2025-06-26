@@ -1,3 +1,4 @@
+import { Model } from 'mongoose';
 import { Types } from 'mongoose';
 
 export type TOrganisationType =
@@ -124,3 +125,8 @@ export type TEmployer = {
   tradingHours: TTradingHours[];
   documents: TDocument;
 };
+
+export interface EmployerModel extends Model<TEmployer> {
+  // eslint-disable-next-line no-unused-vars
+  isUserExists(id: string): Promise<TEmployer | null>;
+}

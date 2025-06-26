@@ -1,5 +1,6 @@
 import { model, Schema } from 'mongoose';
 import {
+  EmployerModel,
   TAddress,
   TDocument,
   TEmployer,
@@ -162,7 +163,7 @@ const documentSchema = new Schema<TDocument>(
   { _id: false },
 );
 
-const employerSchema = new Schema<TEmployer>(
+const employerSchema = new Schema<TEmployer, EmployerModel>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -199,7 +200,32 @@ const employerSchema = new Schema<TEmployer>(
   },
   {
     timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
   },
 );
 
-export const Employer = model<TEmployer>('Employer', employerSchema);
+employerSchema.virtual('address').get(function () {
+  const addr = this.organisationAddress;
+  return [
+    addr.postCode,
+    addr.addressLine1,
+    addr.addressLine2,
+    addr.addressLine3,
+    addr.city,
+    addr.country,
+  ]
+    .filter(Boolean)
+    .join(' ');
+});
+//creating a custom static method
+employerSchema.statics.isUserExists = async function (id: string) {
+  const existingUser = await Employer.findOne({ id });
+  return existingUser;
+};
+
+export const Employer = model<TEmployer, EmployerModel>(
+  'Employer',
+  employerSchema,
+);
