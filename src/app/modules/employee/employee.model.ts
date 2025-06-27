@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import {
+  EmployeeModel,
   TCertifiedMembership,
   TContactInfo,
   TDBSDetails,
@@ -285,34 +286,78 @@ const PayStructureSchema = new Schema<TPayStructure>(
   { _id: false },
 );
 
-const EmployeeSchema = new Schema<TEmployee>({
-  user: {
-    type: Schema.Types.ObjectId,
-    required: [true, 'User id is required'],
-    unique: true,
-    ref: 'User',
+const EmployeeSchema = new Schema<TEmployee, EmployeeModel>(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'User id is required'],
+      unique: true,
+      ref: 'User',
+    },
+    organisation: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'Organisation user id is required'],
+      ref: 'User',
+    },
+    personalDetails: PersonalDetailsSchema,
+    serviceDetails: ServiceDetailsSchema,
+    educationalDetails: [EducationDetailSchema],
+    jobDetails: [JobDetailSchema],
+    trainingDetails: [TrainingDetailsSchema],
+    nextOfKinDetails: NextOfKinDetailsSchema,
+    certifiedMembership: CertifiedMembershipSchema,
+    contactiInfo: ContactInfoSchema,
+    pasportDetails: PassportDetailsSchema,
+    visaDetails: VisaDetailsSchema,
+    eussDetails: EussDetailsSchema,
+    dbsDetails: DbsDetailsSchema,
+    nationalIdDetails: NationalIdDetailsSchema,
+    otherDetails: [OtherDetailsSchema],
+    payDetails: PayDetailsSchema,
+    payStructure: PayStructureSchema,
   },
-  organisation: {
-    type: Schema.Types.ObjectId,
-    required: [true, 'Organisation user id is required'],
-    ref: 'User',
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
   },
-  personalDetails: PersonalDetailsSchema,
-  serviceDetails: ServiceDetailsSchema,
-  educationalDetails: [EducationDetailSchema],
-  jobDetails: [JobDetailSchema],
-  trainingDetails: [TrainingDetailsSchema],
-  nextOfKinDetails: NextOfKinDetailsSchema,
-  certifiedMembership: CertifiedMembershipSchema,
-  contactiInfo: ContactInfoSchema,
-  pasportDetails: PassportDetailsSchema,
-  visaDetails: VisaDetailsSchema,
-  eussDetails: EussDetailsSchema,
-  dbsDetails: DbsDetailsSchema,
-  nationalIdDetails: NationalIdDetailsSchema,
-  otherDetails: [OtherDetailsSchema],
-  payDetails: PayDetailsSchema,
-  payStructure: PayStructureSchema,
+);
+
+EmployeeSchema.virtual('personalDetails.designation').get(function () {
+  return this.serviceDetails?.designation;
 });
 
-export const Employee = model<TEmployee>('Employee', EmployeeSchema);
+EmployeeSchema.virtual('personalDetails.visaExpireDate').get(function () {
+  return this.visaDetails?.expiryDate;
+});
+
+EmployeeSchema.virtual('personalDetails.passportNo').get(function () {
+  return this.pasportDetails?.passportNo;
+});
+
+EmployeeSchema.virtual('personalDetails.fullName').get(function () {
+  const name = this.personalDetails;
+  return [name.firstName, name.middleName, name.lastName]
+    .filter(Boolean)
+    .join(' ');
+});
+
+EmployeeSchema.virtual('personalDetails.address').get(function () {
+  const addr = this.contactiInfo;
+  return [
+    addr.postCode,
+    addr.addressLine1,
+    addr.addressLine2,
+    addr.addressLine3,
+    addr.city,
+    addr.country,
+  ]
+    .filter(Boolean)
+    .join(' ');
+});
+
+export const Employee = model<TEmployee, EmployeeModel>(
+  'Employee',
+  EmployeeSchema,
+);

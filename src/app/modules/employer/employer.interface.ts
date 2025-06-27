@@ -126,7 +126,4 @@ export type TEmployer = {
   documents: TDocument;
 };
 
-export interface EmployerModel extends Model<TEmployer> {
-  // eslint-disable-next-line no-unused-vars
-  isUserExists(id: string): Promise<TEmployer | null>;
-}
+export type EmployerModel = Model<TEmployer>;

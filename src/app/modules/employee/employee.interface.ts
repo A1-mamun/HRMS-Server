@@ -1,3 +1,4 @@
+import { Model } from 'mongoose';
 import { Types } from 'mongoose';
 
 export type TMaritalStatus =
@@ -560,3 +561,5 @@ export type TEmployee = {
   payDetails: TPayDetails;
   payStructure: TPayStructure;
 };
+
+export type EmployeeModel = Model<TEmployee>;

@@ -206,7 +206,7 @@ const employerSchema = new Schema<TEmployer, EmployerModel>(
   },
 );
 
-employerSchema.virtual('address').get(function () {
+employerSchema.virtual('organisationDetails.address').get(function () {
   const addr = this.organisationAddress;
   return [
     addr.postCode,
@@ -219,11 +219,6 @@ employerSchema.virtual('address').get(function () {
     .filter(Boolean)
     .join(' ');
 });
-//creating a custom static method
-employerSchema.statics.isUserExists = async function (id: string) {
-  const existingUser = await Employer.findOne({ id });
-  return existingUser;
-};
 
 export const Employer = model<TEmployer, EmployerModel>(
   'Employer',
