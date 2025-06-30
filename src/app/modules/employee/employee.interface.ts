@@ -551,8 +551,8 @@ export type TEmployee = {
   trainingDetails: TTrainingDetails[];
   nextOfKinDetails: TNextOfKinDetails;
   certifiedMembership: TCertifiedMembership;
-  contactiInfo: TContactInfo;
-  pasportDetails: TPassportDetails;
+  contactInfo: TContactInfo;
+  passportDetails: TPassportDetails;
   visaDetails: TVisaDetails;
   eussDetails: TEussDetails;
   dbsDetails: TDBSDetails;

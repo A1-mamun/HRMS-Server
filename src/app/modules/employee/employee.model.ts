@@ -306,8 +306,8 @@ const EmployeeSchema = new Schema<TEmployee, EmployeeModel>(
     trainingDetails: [TrainingDetailsSchema],
     nextOfKinDetails: NextOfKinDetailsSchema,
     certifiedMembership: CertifiedMembershipSchema,
-    contactiInfo: ContactInfoSchema,
-    pasportDetails: PassportDetailsSchema,
+    contactInfo: ContactInfoSchema,
+    passportDetails: PassportDetailsSchema,
     visaDetails: VisaDetailsSchema,
     eussDetails: EussDetailsSchema,
     dbsDetails: DbsDetailsSchema,
@@ -333,7 +333,7 @@ EmployeeSchema.virtual('personalDetails.visaExpireDate').get(function () {
 });
 
 EmployeeSchema.virtual('personalDetails.passportNo').get(function () {
-  return this.pasportDetails?.passportNo;
+  return this.passportDetails?.passportNo;
 });
 
 EmployeeSchema.virtual('personalDetails.fullName').get(function () {
@@ -344,7 +344,7 @@ EmployeeSchema.virtual('personalDetails.fullName').get(function () {
 });
 
 EmployeeSchema.virtual('personalDetails.address').get(function () {
-  const addr = this.contactiInfo;
+  const addr = this.contactInfo;
   return [
     addr.postCode,
     addr.addressLine1,
