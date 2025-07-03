@@ -193,15 +193,11 @@ const updateOrganisationToDB = async (
     // handle keyContactPerson separately for keyPersonProofOfId
     if ('keyPersonProofOfId' in fileMap) {
       fieldMapping['keyPersonProofOfId'] = ['keyContactPerson', 'proofOfId'];
-    } else {
-      employerData.keyContactPerson.proofOfId = fileMap.proofOfId;
     }
 
     // handle level1User separately for level1PersonProofOfId
     if ('level1PersonProofOfId' in fileMap) {
       fieldMapping['level1PersonProofOfId'] = ['level1User', 'proofOfId'];
-    } else {
-      employerData.level1User.proofOfId = fileMap.proofOfId;
     }
 
     // Replace file URLs in nested employerData
@@ -211,6 +207,17 @@ const updateOrganisationToDB = async (
       }
     }
   }
+
+  const employer = await Employer.findById(id);
+  if (!employer) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Organisation not found');
+  }
+
+  employerData.user = employer.user; // Ensure user reference remains unchanged
+
+  const user = await User.findById(employer.user);
+
+  employerData.organisationDetails.loginEmail = user?.email as string;
 
   const updatedEmployer = await Employer.findByIdAndUpdate(id, employerData, {
     new: true,
