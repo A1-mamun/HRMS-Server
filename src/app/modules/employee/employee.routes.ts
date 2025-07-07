@@ -28,4 +28,10 @@ router.get(
   EmployeeControllers.getOrganisationEmployees,
 );
 
+router.get(
+  '/:id',
+  auth(USER_ROLE.employer),
+  EmployeeControllers.getSingleEmployee,
+);
+
 export const EmployeeRoutes = router;

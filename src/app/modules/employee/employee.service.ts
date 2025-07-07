@@ -164,7 +164,14 @@ const getOrganisationEmployeesFromDB = async (
     result,
   };
 };
+
+const getSingleEmployeeFromDB = async (id: string) => {
+  const result = await Employee.findById(id);
+  return result;
+};
+
 export const EmployeeServices = {
   createEmployeeToDB,
   getOrganisationEmployeesFromDB,
+  getSingleEmployeeFromDB,
 };
