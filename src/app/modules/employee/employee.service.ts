@@ -63,8 +63,8 @@ const createEmployeeToDB = async (
   // create a mapping of field names to their nested paths in the employeeData object
   const fieldMapping: Record<string, string[]> = {
     profilePicture: ['serviceDetails', 'profilePicture'],
-    proofOfAddress: ['contactiInfo', 'proofOfAddress'],
-    passportDocument: ['pasportDetails', 'document'],
+    proofOfAddress: ['contactInfo', 'proofOfAddress'],
+    passportDocument: ['passportDetails', 'document'],
     visaDocumentFrontSide: ['visaDetails', 'frontsideDocument'],
     visaDocumentBackSide: ['visaDetails', 'backsideDocument'],
     eussDocument: ['eussDetails', 'document'],
