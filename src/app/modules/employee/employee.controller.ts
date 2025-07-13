@@ -27,6 +27,26 @@ const createEmployee = catchAsync(async (req, res) => {
   });
 });
 
+const updateEmployee = catchAsync(async (req, res) => {
+  const files = (
+    Array.isArray(req.files) ? req.files : []
+  ) as Express.Multer.File[];
+  const { employeeData } = req.body;
+  const { id } = req.params;
+
+  const result = await EmployeeServices.updateEmployeeToDB(
+    id,
+    files,
+    employeeData,
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Employee data updated successfully',
+    data: result,
+  });
+});
+
 const getOrganisationEmployees = catchAsync(async (req, res) => {
   const organisationEmail = req.user.email;
 
@@ -59,4 +79,5 @@ export const EmployeeControllers = {
   createEmployee,
   getOrganisationEmployees,
   getSingleEmployee,
+  updateEmployee,
 };

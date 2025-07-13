@@ -22,6 +22,18 @@ router.post(
   EmployeeControllers.createEmployee,
 );
 
+router.patch(
+  '/:id',
+  auth(USER_ROLE.employer),
+  upload.any(),
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = JSON.parse(req.body.data);
+    next();
+  },
+  validateRequest(EmployeeValidations.employeeValidationSchema),
+  EmployeeControllers.updateEmployee,
+);
+
 router.get(
   '/organisation-employees',
   auth(USER_ROLE.employer),

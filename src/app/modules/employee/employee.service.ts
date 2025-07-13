@@ -137,6 +137,99 @@ const createEmployeeToDB = async (
   }
 };
 
+const updateEmployeeToDB = async (
+  id: string,
+  files: any[],
+  employeeData: TEmployee,
+) => {
+  const fileMap: Record<string, string> = {};
+
+  // Map file URLs into correct nested paths
+  const replaceInPath = (pathArray: string[], url: string) => {
+    let ref: any = employeeData;
+    for (let i = 0; i < pathArray.length - 1; i++) {
+      ref = ref[pathArray[i]];
+    }
+    ref[pathArray[pathArray.length - 1]] = url;
+  };
+
+  // update array object fields with file URLs
+  const updateArrayObjectFields = (
+    data: any,
+    fileMap: Record<string, string>,
+    arrayField: string,
+  ) => {
+    Object.entries(fileMap).forEach(([fieldKey, fileUrl]) => {
+      const match = fieldKey.match(
+        new RegExp(`^${arrayField}\\.(\\d+)\\.(\\w+)$`),
+      );
+      if (match) {
+        const [, indexStr, prop] = match;
+        const index = parseInt(indexStr);
+        if (data[arrayField] && data[arrayField][index]) {
+          data[arrayField][index][prop] = fileUrl;
+        }
+      }
+    });
+  };
+
+  // create a mapping of field names to their nested paths in the employeeData object
+  const fieldMapping: Record<string, string[]> = {
+    profilePicture: ['serviceDetails', 'profilePicture'],
+    proofOfAddress: ['contactInfo', 'proofOfAddress'],
+    passportDocument: ['passportDetails', 'document'],
+    visaDocumentFrontSide: ['visaDetails', 'frontsideDocument'],
+    visaDocumentBackSide: ['visaDetails', 'backsideDocument'],
+    eussDocument: ['eussDetails', 'document'],
+    dbsDocument: ['dbsDetails', 'document'],
+    nationalIdDocument: ['nationalIdDetails', 'document'],
+  };
+
+  // Upload files to Cloudinary
+  if (files) {
+    const filesToUpload = files.map((file) => ({
+      imageName: `employee_${file.fieldname}_${Date.now()}`,
+      path: file.path,
+    }));
+
+    const uploadedFiles = await sendImagesToCloudinary(filesToUpload);
+
+    uploadedFiles.forEach((img, idx) => {
+      fileMap[files[idx].fieldname] = img.secure_url as string;
+    });
+  }
+
+  // Replace file objects in `data` with their Cloudinary URLs
+  for (const field in fieldMapping) {
+    if (fileMap[field]) {
+      replaceInPath(fieldMapping[field], fileMap[field]);
+    }
+  }
+
+  // update array object fields with file URLs
+  updateArrayObjectFields(employeeData, fileMap, 'educationalDetails');
+  updateArrayObjectFields(employeeData, fileMap, 'otherDetails');
+
+  // set user reference in employeeData
+  const employee = await Employee.findById(id);
+  if (!employee) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Employee not found');
+  }
+
+  employeeData.user = employee.user;
+  employeeData.organisation = employee.organisation;
+
+  const updatedEmployee = await Employee.findByIdAndUpdate(id, employeeData, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!updatedEmployee) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Employee not found');
+  }
+  return updatedEmployee;
+};
+
 const getOrganisationEmployeesFromDB = async (
   organisationEmail: string,
   query: Record<string, unknown>,
@@ -174,4 +267,5 @@ export const EmployeeServices = {
   createEmployeeToDB,
   getOrganisationEmployeesFromDB,
   getSingleEmployeeFromDB,
+  updateEmployeeToDB,
 };
