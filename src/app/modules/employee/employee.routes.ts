@@ -30,7 +30,7 @@ router.patch(
     req.body = JSON.parse(req.body.data);
     next();
   },
-  validateRequest(EmployeeValidations.employeeValidationSchema),
+  validateRequest(EmployeeValidations.employeeUpdateValidationSchema),
   EmployeeControllers.updateEmployee,
 );
 

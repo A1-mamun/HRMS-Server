@@ -34,6 +34,8 @@ const PersonalDetailsSchema = z.object({
   alternativeNo: z.string().optional(),
 });
 
+const PersonalDetailsUpdateSchema = PersonalDetailsSchema.partial();
+
 const ServiceDetailsSchema = z.object({
   department: z.string().optional(),
   designation: z.string().optional(),
@@ -45,6 +47,8 @@ const ServiceDetailsSchema = z.object({
   jobLocation: z.string().optional(),
 });
 
+const ServiceDetailsUpdateSchema = ServiceDetailsSchema.partial();
+
 const EducationDetailSchema = z.object({
   qualification: z.string().optional(),
   subject: z.string().optional(),
@@ -55,6 +59,8 @@ const EducationDetailSchema = z.object({
   grade: z.string().optional(),
 });
 
+const EducationDetailUpdateSchema = EducationDetailSchema.partial();
+
 const JobDetailSchema = z.object({
   title: z.string().optional(),
   startDate: z.string().optional(),
@@ -64,12 +70,16 @@ const JobDetailSchema = z.object({
   responsibilities: z.string().optional(),
 });
 
+const JobDetailUpdateSchema = JobDetailSchema.partial();
+
 const TrainingDetailsSchema = z.object({
   title: z.string().optional(),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
   description: z.string().optional(),
 });
+
+const TrainingDetailsUpdateSchema = TrainingDetailsSchema.partial();
 
 const NextOfKinDetailsSchema = z.object({
   nextOfKinContactName: z.string().optional(),
@@ -83,12 +93,16 @@ const NextOfKinDetailsSchema = z.object({
   nextOfKinContactAddress: z.string().optional(),
 });
 
+const NextOfKinDetailsUpdateSchema = NextOfKinDetailsSchema.partial();
+
 const CertifiedMembershipSchema = z.object({
   licenseTitle: z.string().optional(),
   licenseNo: z.string().optional(),
   issueDate: z.string().optional(),
   expiryDate: z.string().optional(),
 });
+
+const CertifiedMembershipUpdateSchema = CertifiedMembershipSchema.partial();
 
 const ContactInfoSchema = z.object({
   postCode: z.string().optional(),
@@ -98,6 +112,8 @@ const ContactInfoSchema = z.object({
   city: z.string().optional(),
   country: z.enum([...Countries] as [string, ...string[]]).optional(),
 });
+
+const ContactInfoUpdateSchema = ContactInfoSchema.partial();
 
 const PassportDetailsSchema = z.object({
   passportNo: z.string().min(1, 'Passport number is required'),
@@ -122,6 +138,8 @@ const PassportDetailsSchema = z.object({
     required_error: 'Status is required',
   }),
 });
+
+const PassportDetailsUpdateSchema = PassportDetailsSchema.partial();
 
 const VisaDetailsSchema = z.object({
   visaNo: z.string().min(1, 'Visa number is required'),
@@ -148,6 +166,8 @@ const VisaDetailsSchema = z.object({
   }),
 });
 
+const VisaDetailsUpdateSchema = VisaDetailsSchema.partial();
+
 const DocumentSchema = z.object({
   nationality: z.enum([...Nationalies] as [string, ...string[]]).optional(),
   issueDate: z.string().optional(),
@@ -161,10 +181,14 @@ const EussDetailsSchema = DocumentSchema.extend({
   referenceNo: z.string().optional(),
 });
 
+const EussDetailsUpdateSchema = EussDetailsSchema.partial();
+
 const DbsDetailsSchema = DocumentSchema.extend({
   type: z.string().optional(),
   referenceNo: z.string().optional(),
 });
+
+const DbsDetailsUpdateSchema = DbsDetailsSchema.partial();
 
 const NationalIdDetailsSchema = DocumentSchema.extend({
   nationalIdNo: z.string().optional(),
@@ -173,10 +197,14 @@ const NationalIdDetailsSchema = DocumentSchema.extend({
     .optional(),
 });
 
+const NationalIdDetailsUpdateSchema = NationalIdDetailsSchema.partial();
+
 const OtherDetailsSchema = DocumentSchema.extend({
   documentName: z.string().optional(),
   referenceNo: z.string().optional(),
 });
+
+const OtherDetailsUpdateSchema = OtherDetailsSchema.partial();
 
 const PayDetailsSchema = z.object({
   paymentGroup: z.string().optional(),
@@ -196,12 +224,16 @@ const PayDetailsSchema = z.object({
   paymentCurrency: z.string().optional(),
 });
 
+const PayDetailsUpdateSchema = PayDetailsSchema.partial();
+
 const PayStructureSchema = z.object({
   taxablePayment: z.array(z.string()).optional(),
   deductions: z.array(z.string()).optional(),
 });
 
-export const employeeValidationSchema = z.object({
+const PayStructureUpdateSchema = PayStructureSchema.partial();
+
+const employeeValidationSchema = z.object({
   body: z.object({
     credentials: z.object({
       email: z
@@ -233,6 +265,30 @@ export const employeeValidationSchema = z.object({
   }),
 });
 
+const employeeUpdateValidationSchema = z.object({
+  body: z.object({
+    employeeData: z.object({
+      personalDetails: PersonalDetailsUpdateSchema.optional(),
+      serviceDetails: ServiceDetailsUpdateSchema.optional(),
+      educationalDetails: z.array(EducationDetailUpdateSchema).optional(),
+      jobDetails: z.array(JobDetailUpdateSchema).optional(),
+      trainingDetails: z.array(TrainingDetailsUpdateSchema).optional(),
+      nextOfKinDetails: NextOfKinDetailsUpdateSchema.optional(),
+      certifiedMembership: CertifiedMembershipUpdateSchema.optional(),
+      contactInfo: ContactInfoUpdateSchema.optional(),
+      passportDetails: PassportDetailsUpdateSchema.optional(),
+      visaDetails: VisaDetailsUpdateSchema.optional(),
+      eussDetails: EussDetailsUpdateSchema.optional(),
+      dbsDetails: DbsDetailsUpdateSchema.optional(),
+      nationalIdDetails: NationalIdDetailsUpdateSchema.optional(),
+      otherDetails: z.array(OtherDetailsUpdateSchema).optional(),
+      payDetails: PayDetailsUpdateSchema.optional(),
+      payStructure: PayStructureUpdateSchema.optional(),
+    }),
+  }),
+});
+
 export const EmployeeValidations = {
   employeeValidationSchema,
+  employeeUpdateValidationSchema,
 };
