@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose';
-import { TDepartment } from './department.interface';
+import { TAnnualPay } from './annualPay.interface';
 
-const DepartmentSchema = new Schema<TDepartment>(
+const AnnualPaySchema = new Schema<TAnnualPay>(
   {
     name: { type: String, required: true },
     organisation: {
@@ -15,4 +15,4 @@ const DepartmentSchema = new Schema<TDepartment>(
   },
 );
 
-export const Department = model('Department', DepartmentSchema);
+export const AnnualPay = model('AnnualPay', AnnualPaySchema);

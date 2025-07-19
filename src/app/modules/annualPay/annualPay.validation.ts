@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-const DepartmentSchema = z.object({
+const AnnualPaySchema = z.object({
   name: z
     .string()
-    .min(1, 'Department name is required')
+    .min(1, 'Annual pay name is required')
     .max(25)
     .refine(
       (value) => /^[A-Z]/.test(value),
@@ -11,6 +11,6 @@ const DepartmentSchema = z.object({
     ),
 });
 
-export const DepartmentValidation = {
-  DepartmentSchema,
+export const AnnualPayValidation = {
+  AnnualPaySchema,
 };

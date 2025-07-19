@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongoose';
 
-export interface TDepartment {
+export interface TAnnualPay {
   name: string;
   organisation: ObjectId;
 }
