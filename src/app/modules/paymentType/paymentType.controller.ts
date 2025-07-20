@@ -4,11 +4,11 @@ import httpStatus from 'http-status';
 import { PaymentTypeServices } from './paymentType.service';
 
 const createPaymentType = catchAsync(async (req, res) => {
-  const { deptData } = req.body;
+  const paymentTypeData = req.body;
   const organisationEmail = req.user.email;
 
   const result = await PaymentTypeServices.createPaymentTypeToDB(
-    deptData,
+    paymentTypeData,
     organisationEmail,
   );
 

@@ -4,11 +4,11 @@ import httpStatus from 'http-status';
 import { TaxMasterServices } from './taxMaster.service';
 
 const createTaxMaster = catchAsync(async (req, res) => {
-  const { deptData } = req.body;
+  const taxMasterData = req.body;
   const organisationEmail = req.user.email;
 
   const result = await TaxMasterServices.createTaxMasterToDB(
-    deptData,
+    taxMasterData,
     organisationEmail,
   );
 

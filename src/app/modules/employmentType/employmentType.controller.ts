@@ -4,11 +4,11 @@ import httpStatus from 'http-status';
 import { EmploymentTypeServices } from './employmentType.service';
 
 const createEmploymentType = catchAsync(async (req, res) => {
-  const { deptData } = req.body;
+  const employmentTypeData = req.body;
   const organisationEmail = req.user.email;
 
   const result = await EmploymentTypeServices.createEmploymentTypeToDB(
-    deptData,
+    employmentTypeData,
     organisationEmail,
   );
 

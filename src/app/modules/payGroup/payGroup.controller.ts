@@ -4,11 +4,11 @@ import httpStatus from 'http-status';
 import { PayGroupServices } from './payGroup.service';
 
 const createPayGroup = catchAsync(async (req, res) => {
-  const { deptData } = req.body;
+  const payGroupData = req.body;
   const organisationEmail = req.user.email;
 
   const result = await PayGroupServices.createPayGroupToDB(
-    deptData,
+    payGroupData,
     organisationEmail,
   );
 

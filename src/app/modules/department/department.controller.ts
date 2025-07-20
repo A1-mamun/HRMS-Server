@@ -4,7 +4,7 @@ import httpStatus from 'http-status';
 import { DepartmentServices } from './department.service';
 
 const createDepartment = catchAsync(async (req, res) => {
-  const { deptData } = req.body;
+  const deptData = req.body;
   const organisationEmail = req.user.email;
 
   const result = await DepartmentServices.createDepartmentToDB(

@@ -4,11 +4,11 @@ import httpStatus from 'http-status';
 import { WedgesPayModeServices } from './wedgesPayMode.service';
 
 const createWedgesPayMode = catchAsync(async (req, res) => {
-  const { deptData } = req.body;
+  const wedgesPayModeData = req.body;
   const organisationEmail = req.user.email;
 
   const result = await WedgesPayModeServices.createWedgesPayModeToDB(
-    deptData,
+    wedgesPayModeData,
     organisationEmail,
   );
 

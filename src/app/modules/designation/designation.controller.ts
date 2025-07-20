@@ -4,11 +4,11 @@ import httpStatus from 'http-status';
 import { DesignationServices } from './designation.service';
 
 const createDesignation = catchAsync(async (req, res) => {
-  const { deptData } = req.body;
+  const designationData = req.body;
   const organisationEmail = req.user.email;
 
   const result = await DesignationServices.createDesignationToDB(
-    deptData,
+    designationData,
     organisationEmail,
   );
 

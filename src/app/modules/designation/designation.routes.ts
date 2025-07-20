@@ -28,4 +28,4 @@ router.delete(
   DesignationControllers.deleteDesignation,
 );
 
-export const DepartmentRoutes = router;
+export const DesignationRoutes = router;

@@ -4,11 +4,11 @@ import httpStatus from 'http-status';
 import { AnnualPayServices } from './annualPay.service';
 
 const createAnnualPay = catchAsync(async (req, res) => {
-  const { deptData } = req.body;
+  const annualPayData = req.body;
   const organisationEmail = req.user.email;
 
   const result = await AnnualPayServices.createAnnualPayToDB(
-    deptData,
+    annualPayData,
     organisationEmail,
   );
 
