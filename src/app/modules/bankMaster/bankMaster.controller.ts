@@ -4,18 +4,31 @@ import httpStatus from 'http-status';
 import { BankMasterServices } from './bankMaster.service';
 
 const createBankMaster = catchAsync(async (req, res) => {
-  const { deptData } = req.body;
+  const bankMasterData = req.body;
   const organisationEmail = req.user.email;
 
   const result = await BankMasterServices.createBankMasterToDB(
-    deptData,
+    bankMasterData,
     organisationEmail,
   );
 
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
-    message: 'BankMaster created successfully',
+    message: 'Banks created successfully',
+    data: result,
+  });
+});
+
+const getAllBankMasters = catchAsync(async (req, res) => {
+  const organisationEmail = req.user.email;
+
+  const result =
+    await BankMasterServices.getAllBankMastersFromDB(organisationEmail);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Banks retrieved successfully',
     data: result,
   });
 });
@@ -28,7 +41,7 @@ const updateBankMaster = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'BankMaster updated successfully',
+    message: 'Banks updated successfully',
     data: result,
   });
 });
@@ -40,7 +53,7 @@ const deleteBankMaster = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'BankMaster deleted successfully',
+    message: 'Banks deleted successfully',
     data: result,
   });
 });
@@ -49,4 +62,5 @@ export const BankMasterControllers = {
   createBankMaster,
   updateBankMaster,
   deleteBankMaster,
+  getAllBankMasters,
 };

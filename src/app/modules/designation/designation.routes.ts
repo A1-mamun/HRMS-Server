@@ -15,6 +15,13 @@ router.post(
   DesignationControllers.createDesignation,
 );
 
+router.get(
+  '/designations',
+  auth(USER_ROLE.employer),
+  validateRequest(DesignationValidation.DesignationSchema),
+  DesignationControllers.getAllDesignations,
+);
+
 router.patch(
   '/:id',
   auth(USER_ROLE.employer),

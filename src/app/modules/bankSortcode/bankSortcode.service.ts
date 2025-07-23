@@ -21,6 +21,15 @@ const createBankSortcodeToDB = async (
   return newBankSortcode;
 };
 
+const getAllBankSortcodesFromDB = async (organisationEmail: string) => {
+  const user = await User.findOne({ email: organisationEmail });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Organisation not found');
+  }
+  const bankSortcodes = await BankSortcode.find({ organisation: user._id });
+  return bankSortcodes;
+};
+
 const updateBankSortcodeToDB = async (
   id: string,
   deptData: Partial<TBankSortcode>,
@@ -51,4 +60,5 @@ export const BankSortcodeServices = {
   createBankSortcodeToDB,
   updateBankSortcodeToDB,
   deleteBankSortcodeFromDB,
+  getAllBankSortcodesFromDB,
 };

@@ -21,6 +21,15 @@ const createPaymentTypeToDB = async (
   return newPaymentType;
 };
 
+const getAllPaymentTypesFromDB = async (organisationEmail: string) => {
+  const user = await User.findOne({ email: organisationEmail });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Organisation not found');
+  }
+  const paymentTypes = await PaymentType.find({ organisation: user._id });
+  return paymentTypes;
+};
+
 const updatePaymentTypeToDB = async (
   id: string,
   deptData: Partial<TPaymentType>,
@@ -47,4 +56,5 @@ export const PaymentTypeServices = {
   createPaymentTypeToDB,
   updatePaymentTypeToDB,
   deletePaymentTypeFromDB,
+  getAllPaymentTypesFromDB,
 };

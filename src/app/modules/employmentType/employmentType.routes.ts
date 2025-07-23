@@ -14,6 +14,13 @@ router.post(
   EmploymentTypeControllers.createEmploymentType,
 );
 
+router.get(
+  '/employment-types',
+  auth(USER_ROLE.employer),
+  validateRequest(EmploymentTypeValidation.EmploymentTypeSchema),
+  EmploymentTypeControllers.getAllEmploymentTypes,
+);
+
 router.patch(
   '/:id',
   auth(USER_ROLE.employer),

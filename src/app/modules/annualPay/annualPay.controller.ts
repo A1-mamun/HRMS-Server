@@ -15,7 +15,20 @@ const createAnnualPay = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
-    message: 'AnnualPay created successfully',
+    message: 'Annual Pay created successfully',
+    data: result,
+  });
+});
+
+const getAllAnnualPays = catchAsync(async (req, res) => {
+  const organisationEmail = req.user.email;
+
+  const result =
+    await AnnualPayServices.getAllAnnualPaysFromDB(organisationEmail);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Annual Pays retrieved successfully',
     data: result,
   });
 });
@@ -28,7 +41,7 @@ const updateAnnualPay = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'AnnualPay updated successfully',
+    message: 'Annual Pay updated successfully',
     data: result,
   });
 });
@@ -40,7 +53,7 @@ const deleteAnnualPay = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'AnnualPay deleted successfully',
+    message: 'Annual Pay deleted successfully',
     data: result,
   });
 });
@@ -49,4 +62,5 @@ export const AnnualPayControllers = {
   createAnnualPay,
   updateAnnualPay,
   deleteAnnualPay,
+  getAllAnnualPays,
 };

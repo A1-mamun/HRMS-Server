@@ -21,6 +21,15 @@ const createAnnualPayToDB = async (
   return newAnnualPay;
 };
 
+const getAllAnnualPaysFromDB = async (organisationEmail: string) => {
+  const user = await User.findOne({ email: organisationEmail });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Organisation not found');
+  }
+  const annualPays = await AnnualPay.find({ organisation: user._id });
+  return annualPays;
+};
+
 const updateAnnualPayToDB = async (
   id: string,
   deptData: Partial<TAnnualPay>,
@@ -47,4 +56,5 @@ export const AnnualPayServices = {
   createAnnualPayToDB,
   updateAnnualPayToDB,
   deleteAnnualPayFromDB,
+  getAllAnnualPaysFromDB,
 };

@@ -15,7 +15,20 @@ const createTaxMaster = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
-    message: 'TaxMaster created successfully',
+    message: 'Tax created successfully',
+    data: result,
+  });
+});
+
+const getAllTaxMasters = catchAsync(async (req, res) => {
+  const organisationEmail = req.user.email;
+
+  const result =
+    await TaxMasterServices.getAllTaxMastersFromDB(organisationEmail);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Taxs retrieved successfully',
     data: result,
   });
 });
@@ -28,7 +41,7 @@ const updateTaxMaster = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'TaxMaster updated successfully',
+    message: 'Tax updated successfully',
     data: result,
   });
 });
@@ -40,7 +53,7 @@ const deleteTaxMaster = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'TaxMaster deleted successfully',
+    message: 'Tax deleted successfully',
     data: result,
   });
 });
@@ -49,4 +62,5 @@ export const TaxMasterControllers = {
   createTaxMaster,
   updateTaxMaster,
   deleteTaxMaster,
+  getAllTaxMasters,
 };

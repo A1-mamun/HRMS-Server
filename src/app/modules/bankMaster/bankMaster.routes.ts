@@ -15,6 +15,13 @@ router.post(
   BankMasterControllers.createBankMaster,
 );
 
+router.get(
+  '/banks',
+  auth(USER_ROLE.employer),
+  validateRequest(BankMasterValidation.BankMasterSchema),
+  BankMasterControllers.getAllBankMasters,
+);
+
 router.patch(
   '/:id',
   auth(USER_ROLE.employer),

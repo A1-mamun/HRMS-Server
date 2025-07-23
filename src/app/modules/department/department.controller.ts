@@ -20,6 +20,19 @@ const createDepartment = catchAsync(async (req, res) => {
   });
 });
 
+const getAllDepartments = catchAsync(async (req, res) => {
+  const organisationEmail = req.user.email;
+
+  const result =
+    await DepartmentServices.getAllDepartmentsFromDB(organisationEmail);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Departments retrieved successfully',
+    data: result,
+  });
+});
+
 const updateDepartment = catchAsync(async (req, res) => {
   const { id } = req.params;
   const deptData = req.body;
@@ -49,4 +62,5 @@ export const DepartmentControllers = {
   createDepartment,
   updateDepartment,
   deleteDepartment,
+  getAllDepartments,
 };

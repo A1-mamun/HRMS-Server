@@ -15,7 +15,20 @@ const createPaymentType = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
-    message: 'PaymentType created successfully',
+    message: 'Payment Type created successfully',
+    data: result,
+  });
+});
+
+const getAllPaymentTypes = catchAsync(async (req, res) => {
+  const organisationEmail = req.user.email;
+
+  const result =
+    await PaymentTypeServices.getAllPaymentTypesFromDB(organisationEmail);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Payment Types retrieved successfully',
     data: result,
   });
 });
@@ -28,7 +41,7 @@ const updatePaymentType = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'PaymentType updated successfully',
+    message: 'Payment Type updated successfully',
     data: result,
   });
 });
@@ -40,7 +53,7 @@ const deletePaymentType = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'PaymentType deleted successfully',
+    message: 'Payment Type deleted successfully',
     data: result,
   });
 });
@@ -49,4 +62,5 @@ export const PaymentTypeControllers = {
   createPaymentType,
   updatePaymentType,
   deletePaymentType,
+  getAllPaymentTypes,
 };

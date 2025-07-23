@@ -21,6 +21,15 @@ const createTaxMasterToDB = async (
   return newTaxMaster;
 };
 
+const getAllTaxMastersFromDB = async (organisationEmail: string) => {
+  const user = await User.findOne({ email: organisationEmail });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Organisation not found');
+  }
+  const taxMasters = await TaxMaster.find({ organisation: user._id });
+  return taxMasters;
+};
+
 const updateTaxMasterToDB = async (
   id: string,
   deptData: Partial<TTaxMaster>,
@@ -47,4 +56,5 @@ export const TaxMasterServices = {
   createTaxMasterToDB,
   updateTaxMasterToDB,
   deleteTaxMasterFromDB,
+  getAllTaxMastersFromDB,
 };

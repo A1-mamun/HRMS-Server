@@ -14,6 +14,13 @@ router.post(
   WedgesPayModeControllers.createWedgesPayMode,
 );
 
+router.get(
+  '/wedgesPayModes',
+  auth(USER_ROLE.employer),
+  validateRequest(WedgesPayModeValidation.WedgesPayModeSchema),
+  WedgesPayModeControllers.getAllWedgesPayModes,
+);
+
 router.patch(
   '/:id',
   auth(USER_ROLE.employer),

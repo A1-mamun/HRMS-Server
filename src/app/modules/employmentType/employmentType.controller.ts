@@ -15,7 +15,20 @@ const createEmploymentType = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
-    message: 'EmploymentType created successfully',
+    message: 'Employment Type created successfully',
+    data: result,
+  });
+});
+
+const getAllEmploymentTypes = catchAsync(async (req, res) => {
+  const organisationEmail = req.user.email;
+
+  const result =
+    await EmploymentTypeServices.getAllEmploymentTypesFromDB(organisationEmail);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Employment Types retrieved successfully',
     data: result,
   });
 });
@@ -31,7 +44,7 @@ const updateEmploymentType = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'EmploymentType updated successfully',
+    message: 'Employment Type updated successfully',
     data: result,
   });
 });
@@ -43,7 +56,7 @@ const deleteEmploymentType = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'EmploymentType deleted successfully',
+    message: 'Employment Type deleted successfully',
     data: result,
   });
 });
@@ -52,4 +65,5 @@ export const EmploymentTypeControllers = {
   createEmploymentType,
   updateEmploymentType,
   deleteEmploymentType,
+  getAllEmploymentTypes,
 };

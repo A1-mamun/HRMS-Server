@@ -14,6 +14,13 @@ router.post(
   AnnualPayControllers.createAnnualPay,
 );
 
+router.get(
+  '/annualPays',
+  auth(USER_ROLE.employer),
+  validateRequest(AnnualPayValidation.AnnualPaySchema),
+  AnnualPayControllers.getAllAnnualPays,
+);
+
 router.patch(
   '/:id',
   auth(USER_ROLE.employer),

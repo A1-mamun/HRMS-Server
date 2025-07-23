@@ -21,6 +21,15 @@ const createPayGroupToDB = async (
   return newPayGroup;
 };
 
+const getAllPayGroupsFromDB = async (organisationEmail: string) => {
+  const user = await User.findOne({ email: organisationEmail });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Organisation not found');
+  }
+  const payGroups = await PayGroup.find({ organisation: user._id });
+  return payGroups;
+};
+
 const updatePayGroupToDB = async (id: string, deptData: Partial<TPayGroup>) => {
   const updatedPayGroup = await PayGroup.findByIdAndUpdate(id, deptData, {
     new: true,
@@ -44,4 +53,5 @@ export const PayGroupServices = {
   createPayGroupToDB,
   updatePayGroupToDB,
   deletePayGroupFromDB,
+  getAllPayGroupsFromDB,
 };

@@ -14,6 +14,13 @@ router.post(
   BankSortcodeControllers.createBankSortcode,
 );
 
+router.get(
+  '/bankSortcodes',
+  auth(USER_ROLE.employer),
+  validateRequest(BankSortcodeValidation.BankSortcodeSchema),
+  BankSortcodeControllers.getAllBankSortcodes,
+);
+
 router.patch(
   '/:id',
   auth(USER_ROLE.employer),

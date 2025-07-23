@@ -14,6 +14,13 @@ router.post(
   PayGroupControllers.createPayGroup,
 );
 
+router.get(
+  '/pay-groups',
+  auth(USER_ROLE.employer),
+  validateRequest(PayGroupValidation.PayGroupSchema),
+  PayGroupControllers.getAllPayGroups,
+);
+
 router.patch(
   '/:id',
   auth(USER_ROLE.employer),

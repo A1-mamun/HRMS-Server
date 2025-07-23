@@ -20,6 +20,19 @@ const createDesignation = catchAsync(async (req, res) => {
   });
 });
 
+const getAllDesignations = catchAsync(async (req, res) => {
+  const organisationEmail = req.user.email;
+
+  const result =
+    await DesignationServices.getAllDesignationsFromDB(organisationEmail);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Designations retrieved successfully',
+    data: result,
+  });
+});
+
 const updateDesignation = catchAsync(async (req, res) => {
   const { id } = req.params;
   const deptData = req.body;
@@ -49,4 +62,5 @@ export const DesignationControllers = {
   createDesignation,
   updateDesignation,
   deleteDesignation,
+  getAllDesignations,
 };

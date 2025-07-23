@@ -21,6 +21,15 @@ const createDesignationToDB = async (
   return newDesignation;
 };
 
+const getAllDesignationsFromDB = async (organisationEmail: string) => {
+  const user = await User.findOne({ email: organisationEmail });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Organisation not found');
+  }
+  const designations = await Designation.find({ organisation: user._id });
+  return designations;
+};
+
 const updateDesignationToDB = async (
   id: string,
   deptData: Partial<TDesignation>,
@@ -47,4 +56,5 @@ export const DesignationServices = {
   createDesignationToDB,
   updateDesignationToDB,
   deleteDesignationFromDB,
+  getAllDesignationsFromDB,
 };

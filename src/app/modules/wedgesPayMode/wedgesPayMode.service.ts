@@ -21,6 +21,15 @@ const createWedgesPayModeToDB = async (
   return newWedgesPayMode;
 };
 
+const getAllWedgesPayModesFromDB = async (organisationEmail: string) => {
+  const user = await User.findOne({ email: organisationEmail });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Organisation not found');
+  }
+  const wedgesPayModes = await WedgesPayMode.find({ organisation: user._id });
+  return wedgesPayModes;
+};
+
 const updateWedgesPayModeToDB = async (
   id: string,
   deptData: Partial<TWedgesPayMode>,
@@ -51,4 +60,5 @@ export const WedgesPayModeServices = {
   createWedgesPayModeToDB,
   updateWedgesPayModeToDB,
   deleteWedgesPayModeFromDB,
+  getAllWedgesPayModesFromDB,
 };

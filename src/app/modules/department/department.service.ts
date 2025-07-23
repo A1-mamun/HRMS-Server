@@ -21,6 +21,15 @@ const createDepartmentToDB = async (
   return newDepartment;
 };
 
+const getAllDepartmentsFromDB = async (organisationEmail: string) => {
+  const user = await User.findOne({ email: organisationEmail });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Organisation not found');
+  }
+  const departments = await Department.find({ organisation: user._id });
+  return departments;
+};
+
 const updateDepartmentToDB = async (
   id: string,
   deptData: Partial<TDepartment>,
@@ -47,4 +56,5 @@ export const DepartmentServices = {
   createDepartmentToDB,
   updateDepartmentToDB,
   deleteDepartmentFromDB,
+  getAllDepartmentsFromDB,
 };

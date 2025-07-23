@@ -21,6 +21,15 @@ const createEmploymentTypeToDB = async (
   return newEmploymentType;
 };
 
+const getAllEmploymentTypesFromDB = async (organisationEmail: string) => {
+  const user = await User.findOne({ email: organisationEmail });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Organisation not found');
+  }
+  const employmentTypes = await EmploymentType.find({ organisation: user._id });
+  return employmentTypes;
+};
+
 const updateEmploymentTypeToDB = async (
   id: string,
   deptData: Partial<TEmploymentType>,
@@ -51,4 +60,5 @@ export const EmploymentTypeServices = {
   createEmploymentTypeToDB,
   updateEmploymentTypeToDB,
   deleteEmploymentTypeFromDB,
+  getAllEmploymentTypesFromDB,
 };

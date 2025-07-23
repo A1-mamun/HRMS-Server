@@ -14,6 +14,13 @@ router.post(
   TaxMasterControllers.createTaxMaster,
 );
 
+router.get(
+  '/taxMasters',
+  auth(USER_ROLE.employer),
+  validateRequest(TaxMasterValidation.TaxMasterSchema),
+  TaxMasterControllers.getAllTaxMasters,
+);
+
 router.patch(
   '/:id',
   auth(USER_ROLE.employer),

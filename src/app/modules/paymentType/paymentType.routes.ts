@@ -14,6 +14,13 @@ router.post(
   PaymentTypeControllers.createPaymentType,
 );
 
+router.get(
+  '/paymentTypes',
+  auth(USER_ROLE.employer),
+  validateRequest(PaymentTypeValidation.PaymentTypeSchema),
+  PaymentTypeControllers.getAllPaymentTypes,
+);
+
 router.patch(
   '/:id',
   auth(USER_ROLE.employer),
