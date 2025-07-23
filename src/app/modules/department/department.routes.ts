@@ -16,7 +16,6 @@ router.post(
 router.get(
   '/departments',
   auth(USER_ROLE.employer),
-  validateRequest(DepartmentValidation.DepartmentSchema),
   DepartmentControllers.getAllDepartments,
 );
 

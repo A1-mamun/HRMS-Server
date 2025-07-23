@@ -8,16 +8,15 @@ import { PaymentTypeControllers } from './paymentType.controller';
 const router = Router();
 
 router.post(
-  '/create-PaymentType',
+  '/create-payment-type',
   auth(USER_ROLE.employer),
   validateRequest(PaymentTypeValidation.PaymentTypeSchema),
   PaymentTypeControllers.createPaymentType,
 );
 
 router.get(
-  '/paymentTypes',
+  '/payment-types',
   auth(USER_ROLE.employer),
-  validateRequest(PaymentTypeValidation.PaymentTypeSchema),
   PaymentTypeControllers.getAllPaymentTypes,
 );
 

@@ -9,16 +9,15 @@ import { BankMasterControllers } from './bankMaster.controller';
 const router = Router();
 
 router.post(
-  '/create-bank',
+  '/create-bank-master',
   auth(USER_ROLE.employer),
   validateRequest(BankMasterValidation.BankMasterSchema),
   BankMasterControllers.createBankMaster,
 );
 
 router.get(
-  '/banks',
+  '/bank-masters',
   auth(USER_ROLE.employer),
-  validateRequest(BankMasterValidation.BankMasterSchema),
   BankMasterControllers.getAllBankMasters,
 );
 

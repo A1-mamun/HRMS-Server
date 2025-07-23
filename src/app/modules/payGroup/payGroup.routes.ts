@@ -8,7 +8,7 @@ import { PayGroupControllers } from './payGroup.controller';
 const router = Router();
 
 router.post(
-  '/create-PayGroup',
+  '/create-pay-group',
   auth(USER_ROLE.employer),
   validateRequest(PayGroupValidation.PayGroupSchema),
   PayGroupControllers.createPayGroup,
@@ -17,7 +17,6 @@ router.post(
 router.get(
   '/pay-groups',
   auth(USER_ROLE.employer),
-  validateRequest(PayGroupValidation.PayGroupSchema),
   PayGroupControllers.getAllPayGroups,
 );
 

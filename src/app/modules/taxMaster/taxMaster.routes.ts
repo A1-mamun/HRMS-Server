@@ -8,16 +8,15 @@ import { TaxMasterControllers } from './taxMaster.controller';
 const router = Router();
 
 router.post(
-  '/create-TaxMaster',
+  '/create-tax-master',
   auth(USER_ROLE.employer),
   validateRequest(TaxMasterValidation.TaxMasterSchema),
   TaxMasterControllers.createTaxMaster,
 );
 
 router.get(
-  '/taxMasters',
+  '/tax-masters',
   auth(USER_ROLE.employer),
-  validateRequest(TaxMasterValidation.TaxMasterSchema),
   TaxMasterControllers.getAllTaxMasters,
 );
 

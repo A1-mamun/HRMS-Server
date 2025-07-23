@@ -8,16 +8,15 @@ import { AnnualPayControllers } from './annualPay.controller';
 const router = Router();
 
 router.post(
-  '/create-AnnualPay',
+  '/create-annual-pay',
   auth(USER_ROLE.employer),
   validateRequest(AnnualPayValidation.AnnualPaySchema),
   AnnualPayControllers.createAnnualPay,
 );
 
 router.get(
-  '/annualPays',
+  '/annual-pays',
   auth(USER_ROLE.employer),
-  validateRequest(AnnualPayValidation.AnnualPaySchema),
   AnnualPayControllers.getAllAnnualPays,
 );
 

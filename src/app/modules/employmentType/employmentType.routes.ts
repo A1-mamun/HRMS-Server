@@ -17,7 +17,6 @@ router.post(
 router.get(
   '/employment-types',
   auth(USER_ROLE.employer),
-  validateRequest(EmploymentTypeValidation.EmploymentTypeSchema),
   EmploymentTypeControllers.getAllEmploymentTypes,
 );
 

@@ -8,16 +8,15 @@ import { BankSortcodeControllers } from './bankSortcode.controller';
 const router = Router();
 
 router.post(
-  '/create-BankSortcode',
+  '/create-bank-sort-code',
   auth(USER_ROLE.employer),
   validateRequest(BankSortcodeValidation.BankSortcodeSchema),
   BankSortcodeControllers.createBankSortcode,
 );
 
 router.get(
-  '/bankSortcodes',
+  '/bank-sort-codes',
   auth(USER_ROLE.employer),
-  validateRequest(BankSortcodeValidation.BankSortcodeSchema),
   BankSortcodeControllers.getAllBankSortcodes,
 );
 

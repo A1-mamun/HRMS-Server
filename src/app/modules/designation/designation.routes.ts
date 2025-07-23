@@ -18,7 +18,6 @@ router.post(
 router.get(
   '/designations',
   auth(USER_ROLE.employer),
-  validateRequest(DesignationValidation.DesignationSchema),
   DesignationControllers.getAllDesignations,
 );
 

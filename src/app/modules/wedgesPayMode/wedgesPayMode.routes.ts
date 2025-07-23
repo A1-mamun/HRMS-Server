@@ -8,16 +8,15 @@ import { WedgesPayModeControllers } from './wedgesPayMode.controller';
 const router = Router();
 
 router.post(
-  '/create-WedgesPayMode',
+  '/create-wedges-pay-mode',
   auth(USER_ROLE.employer),
   validateRequest(WedgesPayModeValidation.WedgesPayModeSchema),
   WedgesPayModeControllers.createWedgesPayMode,
 );
 
 router.get(
-  '/wedgesPayModes',
+  '/wedges-pay-modes',
   auth(USER_ROLE.employer),
-  validateRequest(WedgesPayModeValidation.WedgesPayModeSchema),
   WedgesPayModeControllers.getAllWedgesPayModes,
 );
 
