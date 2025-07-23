@@ -13,6 +13,12 @@ router.post(
   validateRequest(DepartmentValidation.DepartmentSchema),
   DepartmentControllers.createDepartment,
 );
+router.get(
+  '/departments',
+  auth(USER_ROLE.employer),
+  validateRequest(DepartmentValidation.DepartmentSchema),
+  DepartmentControllers.getAllDepartments,
+);
 
 router.patch(
   '/:id',
