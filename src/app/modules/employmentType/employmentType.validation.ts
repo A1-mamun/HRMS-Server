@@ -5,7 +5,7 @@ const EmploymentTypeSchema = z.object({
     name: z
       .string()
       .min(1, 'Employment type is required')
-      .max(25)
+      .max(100, 'Atmost 100 characters are allowed')
       .refine(
         (value) => /^[A-Z]/.test(value),
         'Must start with a capital letter',
