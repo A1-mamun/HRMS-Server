@@ -27,6 +27,12 @@ router.get(
 );
 
 router.get(
+  '/hcm-master-data',
+  auth(USER_ROLE.employer),
+  EmployerControllers.getHCMMasterData,
+);
+
+router.get(
   '/:id',
   auth(USER_ROLE.admin, USER_ROLE.employer),
   EmployerControllers.getSingleOrganisation,

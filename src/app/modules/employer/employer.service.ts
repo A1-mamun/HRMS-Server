@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// import { JwtPayload } from 'jsonwebtoken';
 import { sendImagesToCloudinary } from '../../utils/sendImageToCloudinary';
 import { TEmployer } from './employer.interface';
 import { User } from '../user/user.model';
@@ -9,6 +8,16 @@ import mongoose from 'mongoose';
 import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
 import QueryBuilder from '../../builder/QueryBuilder';
+import { Department } from '../department/department.model';
+import { Designation } from '../designation/designation.model';
+import { EmploymentType } from '../employmentType/employmentType.model';
+import { PayGroup } from '../payGroup/payGroup.model';
+import { AnnualPay } from '../annualPay/annualPay.model';
+import { BankMaster } from '../bankMaster/bankMaster.model';
+import { BankSortcode } from '../bankSortcode/bankSortcode.model';
+import { TaxMaster } from '../taxMaster/taxMaster.model';
+import { PaymentType } from '../paymentType/paymentType.model';
+import { WedgesPayMode } from '../wedgesPayMode/wedgesPayMode.model';
 
 const createOrgainsationToDB = async (
   files: any[],
@@ -230,9 +239,63 @@ const updateOrganisationToDB = async (
   return updatedEmployer;
 };
 
+const getHCMMasterDataFromDB = async (organisationEmail: string) => {
+  // check if the user exists
+  const user = await User.findOne({ email: organisationEmail });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Organisation not found');
+  }
+
+  // get the organisation's HCM master data
+  const departments = await Department.find({ organisation: user._id }).select(
+    'name _id',
+  );
+  const designations = await Designation.find({
+    organisation: user._id,
+  }).select('name _id');
+  const employmentTypes = await EmploymentType.find({
+    organisation: user._id,
+  }).select('name _id');
+  const payGroups = await PayGroup.find({ organisation: user._id }).select(
+    'name _id',
+  );
+  const annualPays = await AnnualPay.find({ organisation: user._id }).select(
+    'name _id',
+  );
+  const bankMasters = await BankMaster.find({ organisation: user._id }).select(
+    'name _id',
+  );
+  const bankSortCodes = await BankSortcode.find({
+    organisation: user._id,
+  }).select('name _id');
+  const taxMasters = await TaxMaster.find({ organisation: user._id }).select(
+    'name _id',
+  );
+  const paymentTypes = await PaymentType.find({
+    organisation: user._id,
+  }).select('name _id');
+  const wedgesPayModes = await WedgesPayMode.find({
+    organisation: user._id,
+  }).select('name _id');
+
+  return {
+    departments,
+    designations,
+    employmentTypes,
+    payGroups,
+    annualPays,
+    bankMasters,
+    bankSortCodes,
+    taxMasters,
+    paymentTypes,
+    wedgesPayModes,
+  };
+};
+
 export const EmployerServices = {
   createOrgainsationToDB,
   getAllOrganisationsFromDB,
   getSingleOrganisationFromDB,
   updateOrganisationToDB,
+  getHCMMasterDataFromDB,
 };

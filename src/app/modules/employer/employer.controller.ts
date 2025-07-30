@@ -66,9 +66,22 @@ const updateOrganisation = catchAsync(async (req, res) => {
   });
 });
 
+const getHCMMasterData = catchAsync(async (req, res) => {
+  const organisationEmail = req.user.email;
+  const result =
+    await EmployerServices.getHCMMasterDataFromDB(organisationEmail);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'HCM Master Data retrieved successfully',
+    data: result,
+  });
+});
+
 export const EmployerControllers = {
   createOrganisation,
   getAllOrganisations,
   getSingleOrganisation,
   updateOrganisation,
+  getHCMMasterData,
 };
