@@ -10,7 +10,15 @@ const app: Application = express();
 // parser
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(
+  cors({
+    origin: [
+      'http://localhost:5173',
+      'https://hrms-client-366le.ondigitalocean.app',
+    ],
+    credentials: true,
+  }),
+);
 
 // apllication routes
 app.use('/api/', router);
