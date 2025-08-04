@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextFunction, Request, Response } from 'express';
 import catchAsync from '../utils/catchAsync';
 import httpStatus from 'http-status';
@@ -17,10 +18,22 @@ const auth = (...requiredRole: TUserRole[]) => {
     }
 
     // checking if the token is valid
-    const decoded = jwt.verify(
-      token,
-      config.jwt_access_secret as string,
-    ) as JwtPayload;
+    let decoded;
+    try {
+      decoded = jwt.verify(
+        token,
+        config.jwt_access_secret as string,
+      ) as JwtPayload;
+    } catch (error: any) {
+      if (error.name === 'TokenExpiredError') {
+        throw new AppError(
+          httpStatus.UNAUTHORIZED,
+          'Session expired! Please login again.',
+        );
+      } else {
+        throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+      }
+    }
     const { role, email } = decoded;
 
     // checking if the user is exist
