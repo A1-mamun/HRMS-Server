@@ -9,6 +9,7 @@ import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 import { User } from '../user/user.model';
 import QueryBuilder from '../../builder/QueryBuilder';
+import { Employer } from '../employer/employer.model';
 
 // import { Employer } from './employer.model';
 
@@ -240,6 +241,12 @@ const getOrganisationEmployeesFromDB = async (
     throw new AppError(httpStatus.NOT_FOUND, 'User not found !');
   }
 
+  const organisation = await Employer.findOne({ user: user._id });
+
+  if (!organisation) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Organisation not found !');
+  }
+
   const organisationEmployeeQuery = new QueryBuilder(
     Employee.find({ organisation: user._id }),
     query,
@@ -249,12 +256,12 @@ const getOrganisationEmployeesFromDB = async (
     .paginate()
     .fields();
 
-  const result = await organisationEmployeeQuery.modelQuery;
+  const employees = await organisationEmployeeQuery.modelQuery;
   const meta = await organisationEmployeeQuery.countTotal();
 
   return {
     meta,
-    result,
+    result: { employees, organisation },
   };
 };
 
