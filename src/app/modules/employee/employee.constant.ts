@@ -1,8 +1,5 @@
-import {
-  TCountries,
-  TMaritalStatus,
-  TNationalities,
-} from './employee.interface';
+import { TCountries, TNationalities } from '../../types';
+import { TMaritalStatus } from './employee.interface';
 
 export const MaritalStatus: TMaritalStatus[] = [
   'Single',
@@ -12,7 +9,7 @@ export const MaritalStatus: TMaritalStatus[] = [
   'Divorce',
 ];
 
-export const Nationalies: TNationalities[] = [
+export const Nationalities: TNationalities[] = [
   'Afghan',
   'Albanian',
   'Algerian',

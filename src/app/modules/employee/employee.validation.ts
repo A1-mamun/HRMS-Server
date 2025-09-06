@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Countries, MaritalStatus, Nationalies } from './employee.constant';
+import { Countries, MaritalStatus, Nationalities } from './employee.constant';
 
 const PersonalDetailsSchema = z.object({
   employeeCode: z.string().min(1, 'Employee code is required'),
@@ -25,7 +25,7 @@ const PersonalDetailsSchema = z.object({
   niNumber: z.string().optional(),
   dateOfBirth: z.string().optional(),
   maritalStatus: z.enum([...MaritalStatus] as [string, ...string[]]).optional(),
-  nationality: z.enum([...Nationalies] as [string, ...string[]]).optional(),
+  nationality: z.enum([...Nationalities] as [string, ...string[]]).optional(),
   email: z
     .string({ required_error: 'Email is required' })
     .min(1, 'Email is required')
@@ -117,7 +117,7 @@ const ContactInfoUpdateSchema = ContactInfoSchema.partial();
 
 const PassportDetailsSchema = z.object({
   passportNo: z.string().min(1, 'Passport number is required'),
-  nationality: z.enum([...Nationalies] as [string, ...string[]], {
+  nationality: z.enum([...Nationalities] as [string, ...string[]], {
     required_error: 'Nationality is required',
   }),
   placeOfBirth: z.string().min(1, 'Place of birth is required'),
@@ -143,7 +143,7 @@ const PassportDetailsUpdateSchema = PassportDetailsSchema.partial();
 
 const VisaDetailsSchema = z.object({
   visaNo: z.string().min(1, 'Visa number is required'),
-  nationality: z.enum([...Nationalies] as [string, ...string[]], {
+  nationality: z.enum([...Nationalities] as [string, ...string[]], {
     required_error: 'Nationality is required',
   }),
   countryOfResidence: z.enum([...Countries] as [string, ...string[]], {
@@ -169,7 +169,7 @@ const VisaDetailsSchema = z.object({
 const VisaDetailsUpdateSchema = VisaDetailsSchema.partial();
 
 const DocumentSchema = z.object({
-  nationality: z.enum([...Nationalies] as [string, ...string[]]).optional(),
+  nationality: z.enum([...Nationalities] as [string, ...string[]]).optional(),
   issueDate: z.string().optional(),
   expiryDate: z.string().optional(),
   eligibleReviewDate: z.string().optional(),

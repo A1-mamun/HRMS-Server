@@ -19,7 +19,7 @@ import {
   TTrainingDetails,
   TVisaDetails,
 } from './employee.interface';
-import { MaritalStatus, Nationalies } from './employee.constant';
+import { MaritalStatus, Nationalities } from './employee.constant';
 
 const PersonalDetailsSchema = new Schema<TPersonalDetails>(
   {
@@ -34,7 +34,7 @@ const PersonalDetailsSchema = new Schema<TPersonalDetails>(
     niNumber: String,
     dateOfBirth: String,
     maritalStatus: { type: String, enum: MaritalStatus },
-    nationality: { type: String, enum: Nationalies },
+    nationality: { type: String, enum: Nationalities },
     email: {
       type: String,
       unique: true,

@@ -12,6 +12,7 @@ import { PayGroupRoutes } from '../modules/payGroup/payGroup.routes';
 import { PaymentTypeRoutes } from '../modules/paymentType/paymentType.routes';
 import { TaxMasterRoutes } from '../modules/taxMaster/taxMaster.routes';
 import { WedgesPayModeRoutes } from '../modules/wedgesPayMode/wedgesPayMode.routes';
+import { CircumstancesRoutes } from '../modules/circumstances/circumstances.routes';
 
 const router = Router();
 
@@ -67,6 +68,10 @@ const moduleRoutes = [
   {
     path: '/wedges-pay-mode',
     route: WedgesPayModeRoutes,
+  },
+  {
+    path: '/circumstances',
+    route: CircumstancesRoutes,
   },
 ];
 
